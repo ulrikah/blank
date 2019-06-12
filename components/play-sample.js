@@ -2,6 +2,7 @@ const FOLDER = "../assets/samples/"
 const SAMPLES = ['a', 'b', 'c'];
 const SUFFIX = ".mp3"
 
+const Tone = require('tone')
 
 // Component to change to play an audio sample from Tone.js
 AFRAME.registerComponent('play-sample', {

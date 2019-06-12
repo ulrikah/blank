@@ -1,4 +1,5 @@
 // Component to change to a sequential color on click.
+
 AFRAME.registerComponent('cursor-listener', {
   init: function () {
     var lastIndex = -1;
