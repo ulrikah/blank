@@ -18,12 +18,19 @@ AFRAME.registerComponent('play-sample', {
 			"D1" : "../assets/samples/b.mp3",
 			"E1" : "../assets/samples/c.mp3"
 		}, function(){
-			// sampler will trigger on load
-			sampler.triggerAttackRelease("C1")
+			// sampler will trigger an estimated sample on load
+			sampler.triggerAttackRelease("A1")
 		}).toMaster()
 
+
+		const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
+		
+		sampler.connect(pingPong)
+    sampler.volume.value = -25;
+
     this.el.addEventListener('click', function (evt) {
-      sampler.triggerAttackRelease(notes[Math.floor(Math.random()*notes.length)])
+    	// TO DO: should look into this.data for conditional rendering
+      sampler.triggerAttackRelease(evt.target.getAttribute('play-sample'))
     });
   }
 });

@@ -1,6 +1,8 @@
 // npm imports
-const aframe = require('aframe')
+require('aframe');
+require('aframe-state-component');
+require('aframe-event-set-component');
 
 // AFRAME components
-const cursor = require('./components/cursor-listener.js')
-const sampler = require('./components/play-sample.js')
+require('./components/cursor-listener.js')
+require('./components/play-sample.js')

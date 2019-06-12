@@ -7,7 +7,7 @@ AFRAME.registerComponent('cursor-listener', {
     this.el.addEventListener('click', function (evt) {
       lastIndex = (lastIndex + 1) % COLORS.length;
       this.setAttribute('material', 'color', COLORS[lastIndex]);
-      console.log('Clicked at: ', evt.detail.intersection.point);
+      // console.log('Clicked at: ', evt.detail.intersection.point);
     });
   }
 });

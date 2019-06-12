@@ -1,7 +1,7 @@
 # Misc
 .DS_Store
 bundle.js
-
+CNAME
 # Logs
 logs
 *.log
