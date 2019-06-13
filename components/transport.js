@@ -1,5 +1,4 @@
 const Tone = require('tone');
-const Transport = require('tone').Transport;
 
 AFRAME.registerComponent('transport', {
 	schema: {
@@ -17,43 +16,35 @@ AFRAME.registerComponent('transport', {
   	this.createSteps(data.nSteps)
   	const steps = Array.from(document.querySelectorAll('.step')) // convert from nodeList to Array
 
-  	Transport.loop = true;
-  	Transport.loopEnd = '1m';
-  	Transport.bpm.value = data.bpm;
+  	Tone.Transport.loop = true;
+  	Tone.Transport.loopEnd = '1m';
+  	Tone.Transport.bpm.value = data.bpm;
 
-  	// place somewhere else
+  	// TO DO: place somewhere else
   	const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
 		const wah = new Tone.AutoWah(50, 6, -30).toMaster();
     const sampler = new Tone.Sampler({
 			"C1" : "../assets/samples/a.mp3",
 			"D1" : "../assets/samples/b.mp3",
 			"E1" : "../assets/samples/c.mp3"
-		}, function(){
-			// sampler will trigger an estimated sample on load
-			sampler.triggerAttackRelease("A-1")
 		})
 
 		sampler.connect(pingPong)
 		sampler.connect(wah)
     sampler.volume.value = -20;
 
-  	console.log("TRANSPORT", Transport)
+  	console.log("TRANSPORT", Tone.Transport)
 
   	this.el.addEventListener('click', function (evt) {
   		const i = steps.indexOf(evt.target);
   		evt.target.emit('changeStep', { id: i}) // dispatch state action
   	});
 
-  	Transport.start()
-  	Transport.scheduleRepeat(() => { sampler.triggerAttackRelease("A-1")}, '4n')
+  	Tone.Transport.scheduleRepeat(() => { sampler.triggerAttackRelease("A0")}, '2n')
   },
 
-  pause: function () {
-  	Transport.stop();
-  },
+  update: function () {
 
-  play: function () {
-  	Transport.start();
   },
 
   createSteps: function(nSteps) {
