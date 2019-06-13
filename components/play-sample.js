@@ -13,19 +13,21 @@ AFRAME.registerComponent('play-sample', {
 
   init: function () {
   	const notes = ["C1", "D1", "E1"];
+		const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
+		const wah = new Tone.AutoWah(50, 6, -30).toMaster();
     const sampler = new Tone.Sampler({
 			"C1" : "../assets/samples/a.mp3",
 			"D1" : "../assets/samples/b.mp3",
 			"E1" : "../assets/samples/c.mp3"
 		}, function(){
 			// sampler will trigger an estimated sample on load
-			sampler.triggerAttackRelease("A1")
-		}).toMaster()
+			sampler.triggerAttackRelease("A-1")
+		})
 
-
-		const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
-		
 		sampler.connect(pingPong)
+		sampler.connect(wah)
+
+
     sampler.volume.value = -25;
 
     this.el.addEventListener('click', function (evt) {
