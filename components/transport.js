@@ -33,8 +33,6 @@ AFRAME.registerComponent('transport', {
 		sampler.connect(wah)
     sampler.volume.value = -20;
 
-  	console.log("TRANSPORT", Tone.Transport)
-
   	this.el.addEventListener('click', function (evt) {
   		const i = steps.indexOf(evt.target);
   		evt.target.emit('changeStep', { id: i}) // dispatch state action
@@ -51,19 +49,18 @@ AFRAME.registerComponent('transport', {
   	const transportEl = document.querySelector('#transport')
   	for (let i = 0; i < nSteps; i++){
   		// create new step
-  		let step = document.createElement('a-dodecahedron');
-  		step.setAttribute('position', i + ' 0 -7');
+  		let step = document.createElement('a-entity');
+  		step.setAttribute('position', (-Math.floor(nSteps/2) + i) + ' 0 -1');
+  		step.setAttribute('mixin', 'step');
   		step.setAttribute('class', 'step');
-  		step.setAttribute('radius', 0.3);
-  		step.setAttribute('color', '#AABBCC');
-  		step.setAttribute('toggle-color', '');
+  		step.setAttribute('radius', 0.2);
   		transportEl.appendChild(step);
   	}
 
   	// at last, create the current step indicator
-		let step = document.createElement('a-dodecahedron');
+		let step = document.createElement('a-sphere');
 		step.setAttribute('id', 'indicator');
-		step.setAttribute('position', "0 -1 -7");
+		step.setAttribute('position', -Math.floor(nSteps/2) + " -1 -1");
 		step.setAttribute('transparent', true);
 		step.setAttribute('opacity', 0.5);
 		step.setAttribute('radius', 0.1);

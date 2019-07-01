@@ -9,6 +9,13 @@ require('./components/play-sample.js')
 require('./components/toggle-color.js')
 require('./components/transport.js')
 require('./components/play-pause.js')
+require('./components/grab.js')
+require('./components/ground.js')
+require('./components/aabb-collider.js')
+require('./components/refresh-page.js')
+
+// vendor
+require('./vendor/LegacyJSONLoader.js')
 
 // AFRAME state
 require('./state/state.js')
