@@ -76,39 +76,38 @@ AFRAME.registerComponent('transport', {
   		ind.parentNode.removeChild(ind)
   	}
 
-  	let angle = 0;
-  	const inc = 180.0 / nSteps;
-  	const r = 3;
+  	let degs = 0;
+  	const inc = 180.0 / (nSteps-1);
+  	const r = 3; // radius
 
   	for (let i = 0; i < nSteps; i++){
   		
   		// create new step
   		let step = document.createElement('a-entity');
-  		let rad = angle * Math.PI / 180;
-  		const x = (-Math.cos(rad))*r;
-  		const z = (-Math.sin(rad))*r;
+  		let rads = degs * Math.PI / 180; // degrees to radians
+  		const x = (-Math.cos(rads))*r;
+  		const z = (-Math.sin(rads))*r;
 
   		step.setAttribute('position', [x, 0, z].join(' '));
   		step.setAttribute('mixin', 'step');
   		step.setAttribute('class', 'step');
   		step.setAttribute('radius', 0.01);
+  		transportEl.appendChild(step);
 
   		
   		// for debugging purposes
   		let txt = document.createElement('a-text');
   		txt.setAttribute('value', '' + i);
   		txt.setAttribute('position', [x, 1, z].join(' '));
-
-  		transportEl.appendChild(step);
   		transportEl.appendChild(txt)
 
-  		angle += inc;
+  		degs += inc;
   	}
 
   	// at last, create the current step indicator
 		let ind = document.createElement('a-sphere');
 		ind.setAttribute('id', 'indicator');
-		ind.setAttribute('position', -(nSteps/2) + " -1 -1");
+		ind.setAttribute('position', [-Math.cos(0)*r, -1, -Math.sin(0)*r].join(' '));
 		ind.setAttribute('transparent', true);
 		ind.setAttribute('opacity', 0.5);
 		ind.setAttribute('radius', 0.1);
