@@ -5,7 +5,6 @@ require('aframe-event-set-component');
 
 // AFRAME components
 require('./components/cursor-listener.js')
-require('./components/toggle-color.js')
 require('./components/transport.js')
 require('./components/play-pause.js')
 require('./components/grab.js')

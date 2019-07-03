@@ -54,7 +54,7 @@ AFRAME.registerComponent('transport', {
 		let degs = 0;
 		const arc = 180.0
   	const inc = (arc / (nSteps-1))
-  	const r = 3; // radius
+  	const r = 1; // radius
 
 		const ind = document.getElementById('indicator');
 
@@ -62,7 +62,7 @@ AFRAME.registerComponent('transport', {
   		for (let i = 0; i < nSteps; i ++ ){
   			// trigger sample if current step is active
   			if (steps[i]){
-  				sampler.triggerAttackRelease('C2', '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
+  				sampler.triggerAttackRelease('D2', '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
 	  		}
 	  		let rads = degs * Math.PI / 180; // degrees to radians
 	  		const x = (-Math.cos(rads))*r;
@@ -71,7 +71,7 @@ AFRAME.registerComponent('transport', {
 	  		// scheduling an animation event with Tone.Draw due to performance:
 	  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
 				Tone.Draw.schedule(() => {
-		  		ind.setAttribute('position', [x, -1, z].join(' '))
+		  		ind.setAttribute('position', [x, 0, z].join(' '))
 				}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i);
 				degs += inc;
   		}
@@ -97,7 +97,7 @@ AFRAME.registerComponent('transport', {
   	let degs = 0;
   	const arc = 180.0
   	const inc = arc / (nSteps-1);
-  	const r = 3; // radius
+  	const r = 1; // radius
 
   	for (let i = 0; i < nSteps; i++){
   		
@@ -107,7 +107,7 @@ AFRAME.registerComponent('transport', {
   		const x = (-Math.cos(rads))*r;
   		const z = (-Math.sin(rads))*r;
 
-  		step.setAttribute('position', [x, 0, z].join(' '));
+  		step.setAttribute('position', [x, 1, z].join(' '));
   		step.setAttribute('mixin', 'step');
   		step.setAttribute('class', 'step');
   		step.setAttribute('radius', 0.01);
@@ -126,7 +126,7 @@ AFRAME.registerComponent('transport', {
   	// at last, create the current step indicator
 		let ind = document.createElement('a-sphere');
 		ind.setAttribute('id', 'indicator');
-		ind.setAttribute('position', [-Math.cos(0)*r, -1, -Math.sin(0)*r].join(' '));
+		ind.setAttribute('position', [-Math.cos(0)*r, 0, -Math.sin(0)*r].join(' '));
 		ind.setAttribute('transparent', true);
 		ind.setAttribute('opacity', 0.5);
 		ind.setAttribute('radius', 0.1);

@@ -2,28 +2,38 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Hello, A-Frame + Tone.js"</title>
-    <meta name="description" content="Hello, A-Frame + Tone.js">
+    <title> Drrrum machine </title>
+    <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
     <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
     <script type="text/javascript" src="bundle.js"></script>
   </head>
   <body>
-  	<!-- 'debug' and 'stats' may be used as props in a-scene for inspection-->
     <a-scene cursor="rayOrigin: mouse">
-      <a-box play-sample="C1" cursor-listener position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-sphere id="box" play-sample="D1" position="0 3.25 -5" radius=".25" color="#0000AA"></a-sphere>
-      <a-sphere play-sample="D1" position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cylinder play-sample="E1" position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane 
-      	position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"
-        event-set__leave="_event: mouseleave; _target: #box; visible: true"
-      	event-set__enter="_event: mouseenter; _target: #box; visible: false"
-      ></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
-      
-      <!-- VR controllers -->
-      <a-entity vive-controls="hand: left"></a-entity>
-			<a-entity vive-controls="hand: right"></a-entity>
+    	<a-assets>
+        <a-mixin id="step"
+					material="color: #EF2D5E;"
+					geometry="primitive: dodecahedron; radius: 0.2"
+					event-set__hit="geometry.radius: 0.21"
+					event-set__hitend="geometry.radius: 0.2"
+					event-set__mouseenter="geometry.radius: 0.21"
+					event-set__mouseleave="geometry.radius: 0.2"
+       	>
+       	</a-mixin>
+      </a-assets>
+
+    	<a-entity camera wasd-controls look-controls position="0 0 1"></a-entity>
+    	<a-entity id="play-pause" class="step" mixin="step" play-pause position="0 1 -1" radius="0.3"></a-entity>
+    	<a-entity 
+    		id="transport"
+    		bind__transport="steps: steps; bpm: bpm"
+  		>
+    		<!-- steps are injected dynamically inside this entity -->
+  		</a-entity>
+
+			<a-sky color="#CDEFAB"></a-sky>
+			
+			<a-entity laser-controls="hand: left" vive-controls="hand: left" aabb-collider="objects: .step;" grab></a-entity>
+			<a-entity laser-controls="hand: right" vive-controls="hand: right" aabb-collider="objects: .step;" grab></a-entity>
     </a-scene>
   </body>
 </html>
