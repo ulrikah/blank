@@ -1,14 +1,15 @@
 AFRAME.registerComponent('refresh-page', {
   init: function () {
-    this.onHit = this.onHit.bind(this);
+    this.reloadPage = this.reloadPage.bind(this);
   },
 
   play: function () {
   	const el = this.el;
-    el.addEventListener('hit', this.onHit);
+    el.addEventListener('hit', this.reloadPage);
+    ['click', 'grabend'].forEach(e => this.el.addEventListener(e, this.reloadPage));
   },
 
-  onHit: function (evt) {
+  reloadPage: function (evt) {
     location.reload();
   }
 });

@@ -29,12 +29,12 @@ AFRAME.registerComponent('transport', {
   },
   init: function () {
   	
-  	this.el.addEventListener('click', function (evt) {
+  	['click', 'grabend'].forEach(e => this.el.addEventListener(e, function (evt) {
   		evt.target.setAttribute('material', 'color', invertColor(evt.target.getAttribute('material').color))
   		const steps = Array.from(document.querySelectorAll('#transport > .step')) // convert from nodeList to Array
   		const i = steps.indexOf(evt.target);
   		evt.target.emit('changeStep', { id: i}) // dispatch state action
-  	});
+  	}));
   },
 
   update: function () {
@@ -52,9 +52,9 @@ AFRAME.registerComponent('transport', {
 		const steps = data.steps
 		const nSteps = steps.length
 		let degs = 0;
-		const arc = 180.0
+		const arc = 270.0
   	const inc = (arc / (nSteps-1))
-  	const r = 1; // radius
+  	const r = 0.5; // radius
 
 		const ind = document.getElementById('indicator');
 
@@ -71,7 +71,7 @@ AFRAME.registerComponent('transport', {
 	  		// scheduling an animation event with Tone.Draw due to performance:
 	  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
 				Tone.Draw.schedule(() => {
-		  		ind.setAttribute('position', [x, 0, z].join(' '))
+		  		ind.setAttribute('position', [x, 0.5, z].join(' '))
 				}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i);
 				degs += inc;
   		}
@@ -95,9 +95,9 @@ AFRAME.registerComponent('transport', {
   	}
 
   	let degs = 0;
-  	const arc = 180.0
+  	const arc = 270.0
   	const inc = arc / (nSteps-1);
-  	const r = 1; // radius
+  	const r = 0.5; // radius
 
   	for (let i = 0; i < nSteps; i++){
   		
@@ -110,9 +110,9 @@ AFRAME.registerComponent('transport', {
   		step.setAttribute('position', [x, 1, z].join(' '));
   		step.setAttribute('mixin', 'step');
   		step.setAttribute('class', 'step');
-  		step.setAttribute('radius', 0.01);
   		transportEl.appendChild(step);
 
+  		degs += inc;
   		/*
   		// text for debugging purposes
   		let txt = document.createElement('a-text');
@@ -120,16 +120,15 @@ AFRAME.registerComponent('transport', {
   		txt.setAttribute('position', [x, 1, z].join(' '));
   		transportEl.appendChild(txt)
   		*/
-  		degs += inc;
   	}
 
   	// at last, create the current step indicator
 		let ind = document.createElement('a-sphere');
 		ind.setAttribute('id', 'indicator');
-		ind.setAttribute('position', [-Math.cos(0)*r, 0, -Math.sin(0)*r].join(' '));
+		ind.setAttribute('position', [-Math.cos(0)*r, 0.5, -Math.sin(0)*r].join(' '));
 		ind.setAttribute('transparent', true);
 		ind.setAttribute('opacity', 0.5);
-		ind.setAttribute('radius', 0.1);
+		ind.setAttribute('radius', 0.03);
 		ind.setAttribute('color', '#FF0000');
 		transportEl.appendChild(ind);
   }
