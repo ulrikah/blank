@@ -12,9 +12,9 @@ const sampler = new Tone.Sampler({
 })
 
 // sampler.connect(pingPong)
-// sampler.connect(wah)
-sampler.sync()
-sampler.connect(Tone.Master)
+sampler.connect(wah)
+// sampler.sync() // why does this method take so long to execute the next sequence? is this even necessary?
+// sampler.connect(Tone.Master)
 sampler.volume.value = -20;
 
 AFRAME.registerComponent('transport', {
@@ -32,14 +32,13 @@ AFRAME.registerComponent('transport', {
   	this.el.addEventListener('click', function (evt) {
   		evt.target.setAttribute('material', 'color', invertColor(evt.target.getAttribute('material').color))
   		const steps = Array.from(document.querySelectorAll('#transport > .step')) // convert from nodeList to Array
-  		const i = steps.indexOf(evt.target) - 1; // DOM elements are 1-indexed
+  		const i = steps.indexOf(evt.target);
   		evt.target.emit('changeStep', { id: i}) // dispatch state action
   	});
   },
 
   update: function () {
   	const data = this.data
-  	console.log("CHANGE", data.steps)
 
   	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.steps.length){
   		console.log("Updating the number of steps")
@@ -58,10 +57,12 @@ AFRAME.registerComponent('transport', {
   		}
   	}, '1m')
   	
+  	/* ATTEMPT AT SYNCING THE VISUAL STEP INDICATOR
   	Tone.Transport.scheduleRepeat(() => {
   		const ind = document.getElementById('indicator');
   		ind.setAttribute('material', 'color', invertColor(ind.getAttribute('material').color))
   	}, '1m');
+  	*/
   },
 
   createSteps: function(nSteps) {
