@@ -1,10 +1,26 @@
 const Tone = require('tone');
 
+// TO DO: place the Tone stuff somewhere else
+const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
+const wah = new Tone.AutoWah(50, 6, -30).toMaster();
+const sampler = new Tone.Sampler({
+	"C1" : "../assets/samples/a.mp3",
+	"D1" : "../assets/samples/b.mp3",
+	"E1" : "../assets/samples/c.mp3",
+	"C2" : "../assets/samples/707/bd1.wav",
+	"D2" : "../assets/samples/707/snare1.wav"
+})
+
+// sampler.connect(pingPong)
+// sampler.connect(wah)
+sampler.sync()
+sampler.connect(Tone.Master)
+sampler.volume.value = -20;
+
 AFRAME.registerComponent('transport', {
 	schema: {
 		steps: {
-			default: [false, false, false, false, false, false, false, false,
-								false, false, false, false, false, false, false, false]
+			default: Array(16).fill(false)
 		},
     bpm: {
     	type: 'int',
@@ -12,53 +28,54 @@ AFRAME.registerComponent('transport', {
     }
   },
   init: function () {
-  	const data = this.data
-  	console.log(data)
-  	this.createSteps(data.steps.length)
-
-  	Tone.Transport.bpm.value = data.bpm;
-
-  	// TO DO: place somewhere else
-  	const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
-		const wah = new Tone.AutoWah(50, 6, -30).toMaster();
-    const sampler = new Tone.Sampler({
-			"C1" : "../assets/samples/a.mp3",
-			"D1" : "../assets/samples/b.mp3",
-			"E1" : "../assets/samples/c.mp3",
-			"C2" : "../assets/samples/707/bd1.wav",
-			"D2" : "../assets/samples/707/snare1.wav"
-		})
-
-		// sampler.connect(pingPong)
-		sampler.connect(wah)
-		// sampler.connect(Tone.Master)
-    sampler.volume.value = -20;
-
+  	
   	this.el.addEventListener('click', function (evt) {
-  		const steps = Array.from(document.querySelectorAll('.step')) // convert from nodeList to Array
   		evt.target.setAttribute('material', 'color', invertColor(evt.target.getAttribute('material').color))
+  		const steps = Array.from(document.querySelectorAll('#transport > .step')) // convert from nodeList to Array
   		const i = steps.indexOf(evt.target) - 1; // DOM elements are 1-indexed
   		evt.target.emit('changeStep', { id: i}) // dispatch state action
   	});
-
-  	Tone.Transport.scheduleRepeat(() => {
-  		const steps = data.steps
-  		const nSteps = steps.length
-  		for (let i = 0; i < nSteps; i ++ ){
-  			if (steps[i]){
-	  			sampler.triggerAttackRelease('C2', nSteps + 'n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
-	  			// sampler.triggerAttackRelease('D2', nSteps + 'n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
-	  		}
-  		}
-  	}, '1m')
   },
 
   update: function () {
-  	console.log("CHANGE", this.data.steps)
+  	const data = this.data
+  	console.log("CHANGE", data.steps)
+
+  	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.steps.length){
+  		console.log("Updating the number of steps")
+  		this.createSteps(data.steps.length)
+  	}
+  	Tone.Transport.bpm.value = data.bpm;
+
+		const steps = data.steps
+		const nSteps = steps.length
+  	Tone.Transport.scheduleRepeat(() => {
+  		for (let i = 0; i < nSteps; i ++ ){
+  			if (steps[i]){
+  				// how long should the note be triggered, on a general scale? 
+  				sampler.triggerAttackRelease('C2', '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
+	  		}
+  		}
+  	}, '1m')
+  	
+  	Tone.Transport.scheduleRepeat(() => {
+  		const ind = document.getElementById('indicator');
+  		ind.setAttribute('material', 'color', invertColor(ind.getAttribute('material').color))
+  	}, '1m');
   },
 
   createSteps: function(nSteps) {
-  	const transportEl = document.querySelector('#transport')
+  	const transportEl = document.getElementById('transport');
+  	const transportChildren = document.querySelectorAll('#transport > .step');
+  	if (transportChildren.length > 0) {
+  		// removes all children before creating new ones
+  		transportChildren.forEach( (ch) => {
+  			ch.parentNode.removeChild(ch)
+  		});
+  		const ind = document.getElementById('indicator')
+  		ind.parentNode.removeChild(ind)
+
+  	}
   	for (let i = 0; i < nSteps; i++){
   		// create new step
   		let step = document.createElement('a-entity');
@@ -70,14 +87,14 @@ AFRAME.registerComponent('transport', {
   	}
 
   	// at last, create the current step indicator
-		let step = document.createElement('a-sphere');
-		step.setAttribute('id', 'indicator');
-		step.setAttribute('position', -(nSteps/2) + " -1 -1");
-		step.setAttribute('transparent', true);
-		step.setAttribute('opacity', 0.5);
-		step.setAttribute('radius', 0.1);
-		step.setAttribute('color', '#FF0000');
-		transportEl.appendChild(step);
+		let ind = document.createElement('a-sphere');
+		ind.setAttribute('id', 'indicator');
+		ind.setAttribute('position', -(nSteps/2) + " -1 -1");
+		ind.setAttribute('transparent', true);
+		ind.setAttribute('opacity', 0.5);
+		ind.setAttribute('radius', 0.1);
+		ind.setAttribute('color', '#FF0000');
+		transportEl.appendChild(ind);
   }
 });
 

@@ -13,6 +13,7 @@ AFRAME.registerState({
   		const s = Object.assign(state.steps);
   		s[payload.id] = !s[payload.id];
   		state.steps = s;
+  		console.log("STEPS", state.steps)
   	},
   	// changing the number of steps resets all to false
   	updateNSteps: function (state, payload) {
