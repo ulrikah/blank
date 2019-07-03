@@ -12,6 +12,8 @@ require('./components/grab.js')
 require('./components/ground.js')
 require('./components/aabb-collider.js')
 require('./components/refresh-page.js')
+require('./components/rotate.js')
+
 require('./instruments/sampler.js')
 
 // vendor
