@@ -1,7 +1,7 @@
 const Tone = require('tone');
 
 // TO DO: place the Tone stuff somewhere else
-const pingPong = new Tone.PingPongDelay(0.1, 0.8).toMaster();
+const pingPong = new Tone.PingPongDelay(0.1, 0.5).toMaster();
 const wah = new Tone.AutoWah(50, 6, -30).toMaster();
 const sampler = new Tone.Sampler({
 	"C1" : "../assets/samples/a.mp3",
@@ -11,8 +11,8 @@ const sampler = new Tone.Sampler({
 	"D2" : "../assets/samples/707/snare1.wav"
 })
 
-// sampler.connect(pingPong)
-sampler.connect(wah)
+sampler.connect(pingPong)
+// sampler.connect(wah)
 // sampler.sync() // why does this method take so long to execute the next sequence? is this even necessary?
 // sampler.connect(Tone.Master)
 sampler.volume.value = -20;
@@ -40,29 +40,47 @@ AFRAME.registerComponent('transport', {
   update: function () {
   	const data = this.data
 
-  	// reset
+  	// reset if number of steps has changed
   	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.steps.length){
   		console.log("Updating the number of steps")
   		this.createSteps(data.steps.length)
   	}
   	Tone.Transport.clear()
-
   	Tone.Transport.bpm.value = data.bpm;
 
+  	// to make the indicator follow along the arc
 		const steps = data.steps
 		const nSteps = steps.length
+		let degs = 0;
+		const arc = 180.0
+  	const inc = (arc / (nSteps-1))
+  	const r = 3; // radius
+
+		const ind = document.getElementById('indicator');
+
   	Tone.Transport.scheduleRepeat(() => {
   		for (let i = 0; i < nSteps; i ++ ){
+  			// trigger sample if current step is active
   			if (steps[i]){
   				sampler.triggerAttackRelease('C2', '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
 	  		}
+	  		let rads = degs * Math.PI / 180; // degrees to radians
+	  		const x = (-Math.cos(rads))*r;
+	  		const z = (-Math.sin(rads))*r;
+
+	  		// scheduling an animation event with Tone.Draw due to performance:
+	  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
 				Tone.Draw.schedule(() => {
-		  		const ind = document.getElementById('indicator');
-		  		ind.setAttribute('position', (-(nSteps/2) + i) + " -1 -1")
+		  		ind.setAttribute('position', [x, -1, z].join(' '))
 				}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i);
+				degs += inc;
   		}
+  		// reset at the end of each iteration
+			degs = 0;
   	}, '1m')
   },
+
+  		
 
   createSteps: function(nSteps) {
   	const transportEl = document.getElementById('transport');
@@ -77,7 +95,8 @@ AFRAME.registerComponent('transport', {
   	}
 
   	let degs = 0;
-  	const inc = 180.0 / (nSteps-1);
+  	const arc = 180.0
+  	const inc = arc / (nSteps-1);
   	const r = 3; // radius
 
   	for (let i = 0; i < nSteps; i++){
@@ -94,13 +113,13 @@ AFRAME.registerComponent('transport', {
   		step.setAttribute('radius', 0.01);
   		transportEl.appendChild(step);
 
-  		
-  		// for debugging purposes
+  		/*
+  		// text for debugging purposes
   		let txt = document.createElement('a-text');
   		txt.setAttribute('value', '' + i);
   		txt.setAttribute('position', [x, 1, z].join(' '));
   		transportEl.appendChild(txt)
-
+  		*/
   		degs += inc;
   	}
 
