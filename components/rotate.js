@@ -10,7 +10,7 @@ AFRAME.registerComponent('rotate', {
 
   remove: function () {
   	clearInterval(interval)
-  }
+  } 
 });
 
 function rotate(el) {

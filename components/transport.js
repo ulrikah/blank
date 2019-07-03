@@ -74,16 +74,35 @@ AFRAME.registerComponent('transport', {
   		});
   		const ind = document.getElementById('indicator')
   		ind.parentNode.removeChild(ind)
-
   	}
+
+  	let angle = 0;
+  	const inc = 180.0 / nSteps;
+  	const r = 3;
+
   	for (let i = 0; i < nSteps; i++){
+  		
   		// create new step
   		let step = document.createElement('a-entity');
-  		step.setAttribute('position', (-(nSteps/2) + i) + ' 0 -1');
+  		let rad = angle * Math.PI / 180;
+  		const x = (-Math.cos(rad))*r;
+  		const z = (-Math.sin(rad))*r;
+
+  		step.setAttribute('position', [x, 0, z].join(' '));
   		step.setAttribute('mixin', 'step');
   		step.setAttribute('class', 'step');
-  		step.setAttribute('radius', 0.2);
+  		step.setAttribute('radius', 0.01);
+
+  		
+  		// for debugging purposes
+  		let txt = document.createElement('a-text');
+  		txt.setAttribute('value', '' + i);
+  		txt.setAttribute('position', [x, 1, z].join(' '));
+
   		transportEl.appendChild(step);
+  		transportEl.appendChild(txt)
+
+  		angle += inc;
   	}
 
   	// at last, create the current step indicator
