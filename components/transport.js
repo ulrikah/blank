@@ -20,7 +20,7 @@ sampler.volume.value = -20;
 AFRAME.registerComponent('transport', {
 	schema: {
 		steps: {
-			default: Array(16).fill(false)
+			default: Array(16).fill(false) // this field is bound to state, so it will automatically update
 		},
     bpm: {
     	type: 'int',
@@ -40,10 +40,13 @@ AFRAME.registerComponent('transport', {
   update: function () {
   	const data = this.data
 
+  	// reset
   	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.steps.length){
   		console.log("Updating the number of steps")
   		this.createSteps(data.steps.length)
   	}
+  	Tone.Transport.clear()
+
   	Tone.Transport.bpm.value = data.bpm;
 
 		const steps = data.steps
@@ -51,18 +54,14 @@ AFRAME.registerComponent('transport', {
   	Tone.Transport.scheduleRepeat(() => {
   		for (let i = 0; i < nSteps; i ++ ){
   			if (steps[i]){
-  				// how long should the note be triggered, on a general scale? 
-  				sampler.triggerAttackRelease('C2', '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
+  				sampler.triggerAttackRelease('C2', '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
 	  		}
+				Tone.Draw.schedule(() => {
+		  		const ind = document.getElementById('indicator');
+		  		ind.setAttribute('position', (-(nSteps/2) + i) + " -1 -1")
+				}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i);
   		}
   	}, '1m')
-  	
-  	/* ATTEMPT AT SYNCING THE VISUAL STEP INDICATOR
-  	Tone.Transport.scheduleRepeat(() => {
-  		const ind = document.getElementById('indicator');
-  		ind.setAttribute('material', 'color', invertColor(ind.getAttribute('material').color))
-  	}, '1m');
-  	*/
   },
 
   createSteps: function(nSteps) {

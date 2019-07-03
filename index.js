@@ -12,6 +12,7 @@ require('./components/grab.js')
 require('./components/ground.js')
 require('./components/aabb-collider.js')
 require('./components/refresh-page.js')
+require('./instruments/sampler.js')
 
 // vendor
 require('./vendor/LegacyJSONLoader.js')

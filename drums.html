@@ -24,9 +24,8 @@
     	<a-entity camera wasd-controls look-controls position="0 0 1"></a-entity>
     	<a-entity class="step" mixin="step" play-pause position="0 1 -1" radius="0.3"></a-entity>
     	<a-entity 
-    		id="transport" 
-    		transport="bpm: 130;"
-    		bind__transport="steps: steps"
+    		id="transport"
+    		bind__transport="steps: steps; bpm: bpm"
   		>
     		<!-- steps are injected dynamically inside this entity -->
   		</a-entity>
