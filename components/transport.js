@@ -1,7 +1,7 @@
 const Tone = require('tone');
 
 // TO DO: place the Tone stuff somewhere else
-const pingPong = new Tone.PingPongDelay(0.1, 0.5).toMaster();
+const pingPong = new Tone.PingPongDelay(0.1, 0.2).toMaster();
 const wah = new Tone.AutoWah(50, 6, -30).toMaster();
 const sampler = new Tone.Sampler({
 	"C1" : "../assets/samples/a.mp3",
@@ -14,7 +14,7 @@ const sampler = new Tone.Sampler({
 sampler.connect(pingPong)
 // sampler.connect(wah)
 // sampler.sync() // why does this method take so long to execute the next sequence? is this even necessary?
-// sampler.connect(Tone.Master)
+sampler.connect(Tone.Master)
 sampler.volume.value = -20;
 
 AFRAME.registerComponent('transport', {
@@ -25,6 +25,12 @@ AFRAME.registerComponent('transport', {
 		layer: {
 			default: { note: 'D2', steps: Array(8).fill(false)}
 		},
+		layers: {
+			default: [ 
+	    	{ note: 'C2', steps: Array(8).fill(false)},
+	    	{ note: 'D2', steps: Array(8).fill(false)}
+    	]
+		},
     bpm: {
     	type: 'int',
     	default: 120
@@ -34,68 +40,79 @@ AFRAME.registerComponent('transport', {
   	
   	['click', 'grabend'].forEach(e => this.el.addEventListener(e, function (evt) {
   		evt.target.setAttribute('material', 'color', invertColor(evt.target.getAttribute('material').color))
-  		const steps = Array.from(document.querySelectorAll('#transport > .step')) // convert from nodeList to Array
+  		const layer = evt.target.getAttribute('layer')
+  		const steps = Array.from(document.querySelectorAll(`#transport > [layer="${layer}"`)) // convert from nodeList to Array
   		const i = steps.indexOf(evt.target);
-  		evt.target.emit('changeStep', { id: i}) // dispatch state action
+
+			// dispatch state action through an event
+  		evt.target.emit('changeStep', 
+  			{ id: i, layer: parseInt(layer)}
+			)
   	}));
   },
 
   update: function () {
-  	console.log("UPDATE");
   	const data = this.data
 
-  	// reset if number of steps has changed
+  	// recreate steps if number of steps has changed
   	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.layer.steps.length){
   		console.log("Updating the number of steps")
-  		this.createSteps(data.layer.steps.length)
+  		this.createSteps(data.layers)
   	}
   	Tone.Transport.clear()
   	Tone.Transport.bpm.value = data.bpm;
 
   	// to make the indicator follow along the arc
-  	const layer = data.layer;
-		const steps = layer.steps
-		console.log("STEPS", steps)
-		const nSteps = steps.length
-		console.log("N", nSteps);
+  	const layers = data.layers
 		let degs = 0;
 		const arc = 270.0
-  	const inc = (arc / (nSteps-1))
   	const r = 0.5; // radius
 
 		const ind = document.getElementById('indicator');
 
   	Tone.Transport.scheduleRepeat(() => {
-  		for (let i = 0; i < nSteps; i ++ ){
-  			// trigger sample if current step is active
-  			if (steps[i]){
-  				sampler.triggerAttackRelease(layer.note, '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
-	  		}
-	  		let rads = degs * Math.PI / 180; // degrees to radians
-	  		const x = (-Math.cos(rads))*r;
-	  		const z = (-Math.sin(rads))*r;
-				// console.log("[X, Z]", [x, z])
-				console.log(degs)
+  		for (let i = 0; i < layers.length; i ++)
+  		{		
+		  	const layer = layers[i];
+				const steps = layer.steps;
+				const nSteps = steps.length;
+  			const inc = (arc / (nSteps-1));
+  			// console.log("STEPS", steps)
+	  		for (let j = 0; j < nSteps; j ++ ){
+	  			// trigger sample if current step is active
+	  			if (steps[j]){
+	  				sampler.triggerAttackRelease(layer.note, '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j)
+		  		}
 
-	  		// scheduling an animation event with Tone.Draw due to performance:
-	  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
-				Tone.Draw.schedule(() => {
-		  		ind.setAttribute('position', [x, 0.5, z].join(' '))
-				}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i);
-				degs += inc;
+		  		/*
+		  		let rads = degs * Math.PI / 180; // degrees to radians
+		  		const x = (-Math.cos(rads))*r;
+		  		const z = (-Math.sin(rads))*r;
+					// console.log("[X, Z]", [x, z])
+					console.log(degs)
+
+		  		// scheduling an animation event with Tone.Draw due to performance:
+		  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
+					Tone.Draw.schedule(() => {
+			  		ind.setAttribute('position', [x, 0.5, z].join(' '))
+					}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j);
+					degs += inc;
+					*/
+	  		}
+	  		// reset at the end of each iteration
+				degs = 0;
   		}
-  		// reset at the end of each iteration
-			degs = 0;
   	}, '1m')
   },
 
   		
 
-  createSteps: function(nSteps) {
+  createSteps: function(layers) {
   	const transportEl = document.getElementById('transport');
   	const transportChildren = document.querySelectorAll('#transport > .step');
+
+		// removes all children before creating new ones
   	if (transportChildren.length > 0) {
-  		// removes all children before creating new ones
   		transportChildren.forEach( (ch) => {
   			ch.parentNode.removeChild(ch)
   		});
@@ -105,30 +122,31 @@ AFRAME.registerComponent('transport', {
 
   	let degs = 0;
   	const arc = 270.0
-  	const inc = arc / (nSteps-1);
   	const r = 0.5; // radius
+  	
+  	// create steps for each sequence layer
+  	for (let i = 0; i < layers.length; i++)
+  	{	
+	  	const nSteps = layers[i].steps.length
+	  	const inc = arc / (nSteps-1);
 
-  	for (let i = 0; i < nSteps; i++){
-  		
-  		// create new step
-  		let step = document.createElement('a-entity');
-  		let rads = degs * Math.PI / 180; // degrees to radians
-  		const x = (-Math.cos(rads))*r;
-  		const z = (-Math.sin(rads))*r;
+	  	for (let j = 0; j < nSteps; j++){
+	  		
+	  		// create new step
+	  		let step = document.createElement('a-entity');
+	  		let rads = degs * Math.PI / 180; // degrees to radians
+	  		const x = (-Math.cos(rads))*r;
+	  		const z = (-Math.sin(rads))*r;
 
-  		step.setAttribute('position', [x, 1, z].join(' '));
-  		step.setAttribute('mixin', 'step');
-  		step.setAttribute('class', 'step');
-  		transportEl.appendChild(step);
+	  		step.setAttribute('position', [x, 1 + (0.3)*i, z].join(' '));
+	  		step.setAttribute('mixin', 'step');
+	  		step.setAttribute('class', 'step');
+	  		step.setAttribute('layer', i);
+	  		transportEl.appendChild(step);
 
-  		degs += inc;
-  		/*
-  		// text for debugging purposes
-  		let txt = document.createElement('a-text');
-  		txt.setAttribute('value', '' + i);
-  		txt.setAttribute('position', [x, 1, z].join(' '));
-  		transportEl.appendChild(txt)
-  		*/
+	  		degs += inc;
+	  	}
+	  	degs = 0;
   	}
 
   	// at last, create the current step indicator

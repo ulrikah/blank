@@ -6,15 +6,21 @@ AFRAME.registerState({
     // steps: Array(document.querySelector('#transport').getAttribute('transport').nSteps).fill(false)
     steps: Array(8).fill(false),
     layer: { note: 'C2', steps: Array(8).fill(false)},
-    bpm: 30
+    layers: [ 
+    	{ note: 'C2', steps: Array(8).fill(false)},
+    	{ note: 'D2', steps: Array(8).fill(false)},
+    	{ note: 'C1', steps: Array(8).fill(false)},
+    	{ note: 'D1', steps: Array(8).fill(false)}
+    ],
+    bpm: 120
   },
  
   handlers: {
 
   	changeStep: function (state, payload) {
-  		const s = Object.assign(state.layer.steps);
-  		s[payload.id] = !s[payload.id];
-  		state.layer.steps = s;
+  		const steps = Object.assign(state.layers[payload.layer].steps);
+			steps[payload.id] = !steps[payload.id];
+			state.layers[payload.layer].steps = steps;
   	},
   	updateBpm: function (state, payload) {
   		if (payload.bpm && typeof(payload.bpm) === "number" && payload.bpm > 0)
