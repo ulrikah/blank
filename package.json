@@ -5,11 +5,11 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ulrikah/aframe-tone-boilerplate.git"
+    "url": "https://github.com/ulrikah/blank.git"
   },
   "scripts": {
     "start": "budo index.js:bundle.js --live --port 9000 -o",
-    "build": "browserify index.js | uglifyjs -cm > bundle.js"
+    "build": "browserify index.js -o bundle.js && surge"
   },
   "keywords": [
     "aframe",

@@ -116,7 +116,7 @@ AFRAME.registerComponent('transport', {
 
   	let degs = 0;
   	const arc = 270.0
-  	const r = 0.5; // radius
+  	const r = 1; // radius
   	
   	// create steps for each sequence layer
   	for (let i = 0; i < layers.length; i++)
