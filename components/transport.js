@@ -22,6 +22,9 @@ AFRAME.registerComponent('transport', {
 		steps: {
 			default: Array(16).fill(false) // this field is bound to state, so it will automatically update
 		},
+		layer: {
+			default: { note: 'D2', steps: Array(8).fill(false)}
+		},
     bpm: {
     	type: 'int',
     	default: 120
@@ -38,19 +41,23 @@ AFRAME.registerComponent('transport', {
   },
 
   update: function () {
+  	console.log("UPDATE");
   	const data = this.data
 
   	// reset if number of steps has changed
-  	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.steps.length){
+  	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.layer.steps.length){
   		console.log("Updating the number of steps")
-  		this.createSteps(data.steps.length)
+  		this.createSteps(data.layer.steps.length)
   	}
   	Tone.Transport.clear()
   	Tone.Transport.bpm.value = data.bpm;
 
   	// to make the indicator follow along the arc
-		const steps = data.steps
+  	const layer = data.layer;
+		const steps = layer.steps
+		console.log("STEPS", steps)
 		const nSteps = steps.length
+		console.log("N", nSteps);
 		let degs = 0;
 		const arc = 270.0
   	const inc = (arc / (nSteps-1))
@@ -62,11 +69,13 @@ AFRAME.registerComponent('transport', {
   		for (let i = 0; i < nSteps; i ++ ){
   			// trigger sample if current step is active
   			if (steps[i]){
-  				sampler.triggerAttackRelease('D2', '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
+  				sampler.triggerAttackRelease(layer.note, '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * i)
 	  		}
 	  		let rads = degs * Math.PI / 180; // degrees to radians
 	  		const x = (-Math.cos(rads))*r;
 	  		const z = (-Math.sin(rads))*r;
+				// console.log("[X, Z]", [x, z])
+				console.log(degs)
 
 	  		// scheduling an animation event with Tone.Draw due to performance:
 	  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
