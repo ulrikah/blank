@@ -5,14 +5,13 @@ AFRAME.registerState({
   	// the line below doesn't work because the state is inititated before the transport entity is rendered
     // steps: Array(document.querySelector('#transport').getAttribute('transport').nSteps).fill(false)
     steps: Array(8).fill(false),
-    layer: { note: 'C2', steps: Array(8).fill(false)},
     layers: [ 
     	{ note: 'C2', steps: Array(8).fill(false)},
     	{ note: 'D2', steps: Array(8).fill(false)},
     	{ note: 'C1', steps: Array(8).fill(false)},
     	{ note: 'D1', steps: Array(8).fill(false)}
     ],
-    bpm: 120
+    bpm: 130
   },
  
   handlers: {

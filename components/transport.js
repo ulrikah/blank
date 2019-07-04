@@ -22,9 +22,6 @@ AFRAME.registerComponent('transport', {
 		steps: {
 			default: Array(16).fill(false) // this field is bound to state, so it will automatically update
 		},
-		layer: {
-			default: { note: 'D2', steps: Array(8).fill(false)}
-		},
 		layers: {
 			default: [ 
 	    	{ note: 'C2', steps: Array(8).fill(false)},
@@ -41,7 +38,7 @@ AFRAME.registerComponent('transport', {
   	['click', 'grabend'].forEach(e => this.el.addEventListener(e, function (evt) {
   		evt.target.setAttribute('material', 'color', invertColor(evt.target.getAttribute('material').color))
   		const layer = evt.target.getAttribute('layer')
-  		const steps = Array.from(document.querySelectorAll(`#transport > [layer="${layer}"`)) // convert from nodeList to Array
+  		const steps = Array.from(document.querySelectorAll(`#transport > [layer="${layer}"]`)) // convert from nodeList to Array
   		const i = steps.indexOf(evt.target);
 
 			// dispatch state action through an event
@@ -55,7 +52,7 @@ AFRAME.registerComponent('transport', {
   	const data = this.data
 
   	// recreate steps if number of steps has changed
-  	if (Array.from(document.querySelectorAll('#transport .step')).length !== data.layer.steps.length){
+  	if (isChange(data.layers)) {
   		console.log("Updating the number of steps")
   		this.createSteps(data.layers)
   	}
@@ -77,7 +74,6 @@ AFRAME.registerComponent('transport', {
 				const steps = layer.steps;
 				const nSteps = steps.length;
   			const inc = (arc / (nSteps-1));
-  			// console.log("STEPS", steps)
 	  		for (let j = 0; j < nSteps; j ++ ){
 	  			// trigger sample if current step is active
 	  			if (steps[j]){
@@ -88,8 +84,6 @@ AFRAME.registerComponent('transport', {
 		  		let rads = degs * Math.PI / 180; // degrees to radians
 		  		const x = (-Math.cos(rads))*r;
 		  		const z = (-Math.sin(rads))*r;
-					// console.log("[X, Z]", [x, z])
-					console.log(degs)
 
 		  		// scheduling an animation event with Tone.Draw due to performance:
 		  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
@@ -163,4 +157,16 @@ AFRAME.registerComponent('transport', {
 
 invertColor = (col) => {
  	return "#" + col.split("").slice(1).reverse().join("")
+}
+
+isChange = (layers) => {
+	for (let i = 0; i < layers.length; i++)
+	{	
+		// comparing the length of the state array and the length of the html layer
+		const layer = layers[i]
+		if (Array.from(document.querySelectorAll(`#transport > [layer="${i}"]`)).length !== layer.steps.length){
+			return true;
+		}
+	}
+	return false;
 }
