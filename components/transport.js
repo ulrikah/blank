@@ -12,10 +12,25 @@ const sampler = new Tone.Sampler({
 	"D1" : "../assets/samples/b.mp3",
 	"E1" : "../assets/samples/c.mp3",
 	"C2" : "../assets/samples/707/bd1.wav",
-	"D2" : "../assets/samples/707/snare1.wav"
+	"D2" : "../assets/samples/707/snare1.wav",
+
+	// synth folder
+	"C3" : "../assets/samples/synth/kick1.wav",
+	"D3" : "../assets/samples/synth/kick8.wav",
+	"E3" : "../assets/samples/synth/bass1.wav",
+	"F3" : "../assets/samples/synth/bass2.wav",
+	"G3" : "../assets/samples/synth/organ.wav",
+	"A3" : "../assets/samples/synth/pad1.wav",
+	"B3" : "../assets/samples/synth/pad2.wav",
+	"C4" : "../assets/samples/synth/perc1.wav",
+	"D4" : "../assets/samples/synth/perc2.wav",
+	"E4" : "../assets/samples/synth/perc3.wav",
+	"F4" : "../assets/samples/synth/stab.wav",
+	"G4" : "../assets/samples/synth/synth.wav"
 })
 
-sampler.connect(pingPong)
+
+// sampler.connect(pingPong)
 // sampler.connect(wah)
 // sampler.sync() // why does this method take so long to execute the next sequence? is this even necessary?
 sampler.connect(Tone.Master)
@@ -30,10 +45,7 @@ const r = 1; // radius of the arc
 AFRAME.registerComponent('transport', {
 	schema: {
 		layers: {
-			default: [ 
-	    	{ note: 'C2', steps: Array(8).fill(false)},
-	    	{ note: 'D2', steps: Array(8).fill(false)}
-    	]
+			default: [ ]
 		},
     bpm: {
     	type: 'int',
@@ -81,7 +93,7 @@ AFRAME.registerComponent('transport', {
 	  		for (let j = 0; j < nSteps; j ++ ){
 	  			// trigger sample if current step is active
 	  			if (steps[j]){
-	  				sampler.triggerAttackRelease(layer.note, '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j)
+	  				sampler.triggerAttackRelease(layer.note, '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j)
 		  		}
 
 		  		// we only need one animation schedule

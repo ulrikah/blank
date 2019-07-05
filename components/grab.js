@@ -66,6 +66,7 @@ AFRAME.registerComponent('grab', {
     	hitEl.emit('grab')
     	console.log("hitEl while grabbing", hitEl)
     }
+    /* REMOVING position update to prevent
     this.updateDelta();
     position = hitEl.getAttribute('position');
     hitEl.setAttribute('position', {
@@ -73,6 +74,7 @@ AFRAME.registerComponent('grab', {
       y: position.y + this.deltaPosition.y,
       z: position.z + this.deltaPosition.z
     });
+    */
   },
 
   updateDelta: function () {
