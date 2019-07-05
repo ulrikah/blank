@@ -1,6 +1,10 @@
 const Tone = require('tone');
 
+
+// ____TONE START
+
 // TO DO: place the Tone stuff somewhere else
+
 const pingPong = new Tone.PingPongDelay(0.1, 0.2).toMaster();
 const wah = new Tone.AutoWah(50, 6, -30).toMaster();
 const sampler = new Tone.Sampler({
@@ -17,11 +21,14 @@ sampler.connect(pingPong)
 sampler.connect(Tone.Master)
 sampler.volume.value = -20;
 
+// ____TONE END
+
+let degs = 0;
+const arc = 270.0
+const r = 1; // radius of the arc
+
 AFRAME.registerComponent('transport', {
 	schema: {
-		steps: {
-			default: Array(16).fill(false) // this field is bound to state, so it will automatically update
-		},
 		layers: {
 			default: [ 
 	    	{ note: 'C2', steps: Array(8).fill(false)},
@@ -49,21 +56,17 @@ AFRAME.registerComponent('transport', {
   },
 
   update: function () {
-  	const data = this.data
+  	const data = this.data // props, including bound state
+  	const layers = data.layers
 
-  	// recreate steps if number of steps has changed
-  	if (isChange(data.layers)) {
+  	// redraw steps if number of steps has changed
+  	if (isChange(layers)) {
   		console.log("Updating the number of steps")
-  		this.createSteps(data.layers)
+  		this.createSteps(layers)
   	}
+  	// removing scheduled events
   	Tone.Transport.clear()
   	Tone.Transport.bpm.value = data.bpm;
-
-  	// to make the indicator follow along the arc
-  	const layers = data.layers
-		let degs = 0;
-		const arc = 270.0
-  	const r = 0.5; // radius
 
 		const ind = document.getElementById('indicator');
 
@@ -74,38 +77,39 @@ AFRAME.registerComponent('transport', {
 				const steps = layer.steps;
 				const nSteps = steps.length;
   			const inc = (arc / (nSteps-1));
+
 	  		for (let j = 0; j < nSteps; j ++ ){
 	  			// trigger sample if current step is active
 	  			if (steps[j]){
 	  				sampler.triggerAttackRelease(layer.note, '16n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j)
 		  		}
 
-		  		/*
-		  		let rads = degs * Math.PI / 180; // degrees to radians
-		  		const x = (-Math.cos(rads))*r;
-		  		const z = (-Math.sin(rads))*r;
+		  		// we only need one animation schedule
+		  		if (i === 0)
+		  		{	
+			  		let rads = degs * Math.PI / 180; // degrees to radians
+			  		const x = (-Math.cos(rads))*r;
+			  		const z = (-Math.sin(rads))*r;
 
-		  		// scheduling an animation event with Tone.Draw due to performance:
-		  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
-					Tone.Draw.schedule(() => {
-			  		ind.setAttribute('position', [x, 0.5, z].join(' '))
-					}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j);
+			  		// scheduling animation events with Tone.Draw due to performance:
+			  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
+						Tone.Draw.schedule(() => {
+				  		ind.setAttribute('position', [x, 0.5, z].join(' '))
+						}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j);
+		  		}
 					degs += inc;
-					*/
 	  		}
-	  		// reset at the end of each iteration
+	  		// reset indicator pos at the end of each iteration
 				degs = 0;
   		}
   	}, '1m')
   },
 
-  		
-
   createSteps: function(layers) {
   	const transportEl = document.getElementById('transport');
   	const transportChildren = document.querySelectorAll('#transport > .step');
 
-		// removes all children before creating new ones
+		// removes all steps before creating new ones
   	if (transportChildren.length > 0) {
   		transportChildren.forEach( (ch) => {
   			ch.parentNode.removeChild(ch)
@@ -113,10 +117,6 @@ AFRAME.registerComponent('transport', {
   		const ind = document.getElementById('indicator')
   		ind.parentNode.removeChild(ind)
   	}
-
-  	let degs = 0;
-  	const arc = 270.0
-  	const r = 1; // radius
   	
   	// create steps for each sequence layer
   	for (let i = 0; i < layers.length; i++)
