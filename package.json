@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "budo index.js:bundle.js --live --port 9000 -o",
-    "build": "browserify index.js -o bundle.js && surge"
+    "build": "browserify index.js -o bundle.js && surge ."
   },
   "keywords": [
     "aframe",
