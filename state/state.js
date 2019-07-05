@@ -9,7 +9,7 @@ AFRAME.registerState({
     	{ note: 'D3', steps: Array(16).fill(false)},
     	{ note: 'E3', steps: Array(16).fill(false)},
     	{ note: 'C4', steps: Array(16).fill(false)},
-    	{ note: 'D4', steps: Array(16).fill(false)},
+    	{ note: 'F4', steps: Array(16).fill(false)},
     	{ note: 'E4', steps: Array(16).fill(false)},
     ],
     bpm: 130

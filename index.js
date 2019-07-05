@@ -2,6 +2,7 @@
 require('aframe');
 require('aframe-state-component');
 require('aframe-event-set-component');
+require('super-hands')
 
 // AFRAME components
 require('./components/cursor-listener.js')

@@ -8,9 +8,9 @@ const Tone = require('tone');
 const pingPong = new Tone.PingPongDelay(0.1, 0.2).toMaster();
 const wah = new Tone.AutoWah(50, 6, -30).toMaster();
 const sampler = new Tone.Sampler({
-	"C1" : "../assets/samples/a.mp3",
-	"D1" : "../assets/samples/b.mp3",
-	"E1" : "../assets/samples/c.mp3",
+	"C1" : "../assets/samples/abc/a.mp3",
+	"D1" : "../assets/samples/abc/b.mp3",
+	"E1" : "../assets/samples/abc/c.mp3",
 	"C2" : "../assets/samples/707/bd1.wav",
 	"D2" : "../assets/samples/707/snare1.wav",
 
@@ -23,7 +23,7 @@ const sampler = new Tone.Sampler({
 	"A3" : "../assets/samples/synth/pad1.wav",
 	"B3" : "../assets/samples/synth/pad2.wav",
 	"C4" : "../assets/samples/synth/perc1.wav",
-	"D4" : "../assets/samples/synth/perc2.wav",
+	// "D4" : "../assets/samples/synth/perc2.wav",
 	"E4" : "../assets/samples/synth/perc3.wav",
 	"F4" : "../assets/samples/synth/stab.wav",
 	"G4" : "../assets/samples/synth/synth.wav"
@@ -39,7 +39,7 @@ sampler.volume.value = -20;
 // ____TONE END
 
 let degs = 0;
-const arc = 270.0
+const arc = 240.0
 const r = 1; // radius of the arc
 
 AFRAME.registerComponent('transport', {
@@ -144,7 +144,7 @@ AFRAME.registerComponent('transport', {
 	  		const x = (-Math.cos(rads))*r;
 	  		const z = (-Math.sin(rads))*r;
 
-	  		step.setAttribute('position', [x, 1 + (0.3)*i, z].join(' '));
+	  		step.setAttribute('position', [x, 1 + (0.2)*i, z].join(' '));
 	  		step.setAttribute('mixin', 'step');
 	  		step.setAttribute('class', 'step');
 	  		step.setAttribute('layer', i);
