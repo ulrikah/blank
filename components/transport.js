@@ -8,25 +8,25 @@ const Tone = require('tone');
 const pingPong = new Tone.PingPongDelay(0.1, 0.2).toMaster();
 const wah = new Tone.AutoWah(50, 6, -30).toMaster();
 const sampler = new Tone.Sampler({
-	"C1" : "../assets/samples/abc/a.mp3",
-	"D1" : "../assets/samples/abc/b.mp3",
-	"E1" : "../assets/samples/abc/c.mp3",
-	"C2" : "../assets/samples/707/bd1.wav",
-	"D2" : "../assets/samples/707/snare1.wav",
+	// "C1" : "../assets/samples/abc/a.mp3",
+	// "D1" : "../assets/samples/abc/b.mp3",
+	// "E1" : "../assets/samples/abc/c.mp3",
+	// "C2" : "../assets/samples/707/bd1.wav",
+	// "D2" : "../assets/samples/707/snare1.wav",
 
 	// synth folder
 	"C3" : "../assets/samples/synth/kick1.wav",
 	"D3" : "../assets/samples/synth/kick8.wav",
 	"E3" : "../assets/samples/synth/bass1.wav",
-	"F3" : "../assets/samples/synth/bass2.wav",
-	"G3" : "../assets/samples/synth/organ.wav",
-	"A3" : "../assets/samples/synth/pad1.wav",
-	"B3" : "../assets/samples/synth/pad2.wav",
+	// "F3" : "../assets/samples/synth/bass2.wav",
+	// "G3" : "../assets/samples/synth/organ.wav",
+	// "A3" : "../assets/samples/synth/pad1.wav",
+	// "B3" : "../assets/samples/synth/pad2.wav",
 	"C4" : "../assets/samples/synth/perc1.wav",
 	// "D4" : "../assets/samples/synth/perc2.wav",
 	"E4" : "../assets/samples/synth/perc3.wav",
 	"F4" : "../assets/samples/synth/stab.wav",
-	"G4" : "../assets/samples/synth/synth.wav"
+	// "G4" : "../assets/samples/synth/synth.wav"
 })
 
 

@@ -1,3 +1,5 @@
+// This component was forked from https://github.com/donmccurdy/aframe-extras
+
 /* global AFRAME, THREE */
 
 /**
@@ -64,17 +66,27 @@ AFRAME.registerComponent('grab', {
     if (hitEl.is(this.GRABBED_STATE)){
     	hitEl.removeAttribute('dynamic-body')
     	hitEl.emit('grab')
-    	console.log("hitEl while grabbing", hitEl)
     }
-    /* REMOVING position update to prevent
+
     this.updateDelta();
-    position = hitEl.getAttribute('position');
-    hitEl.setAttribute('position', {
-      x: position.x + this.deltaPosition.x,
-      y: position.y + this.deltaPosition.y,
-      z: position.z + this.deltaPosition.z
-    });
-    */
+
+    // updates the scale in relation to change in z position
+    const n = THREE.Math.mapLinear(this.deltaPosition.y, -0.1, 0.1, 0.85, 1.15)
+    const range = [0.5, 1.5]
+
+    // hacky check to see if the new value is within the desired range
+    scale = hitEl.getAttribute('scale');
+    if (!(scale.y * n < range[0] || scale.y * n > range[1])){
+
+    	const layer = hitEl.getAttribute('layer')
+  		const steps = Array.from(document.querySelectorAll(`#transport > [layer="${layer}"]`)) // convert from nodeList to Array
+  		const i = steps.indexOf(hitEl);
+  		const vel = THREE.Math.mapLinear(scale.y, range[0], range[1], 0.5, 1.5) // not necessary per now, but in case range has to change
+
+    	// emit event to update velocity in state
+    	hitEl.emit('updateVelocity', { id : i, layer: layer, value: vel})
+  		hitEl.setAttribute('scale', scale.multiplyScalar(n))
+    }
   },
 
   updateDelta: function () {

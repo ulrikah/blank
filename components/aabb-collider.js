@@ -1,3 +1,5 @@
+// This component was forked from https://github.com/donmccurdy/aframe-extras
+
 /* global AFRAME, THREE */
 
 /**

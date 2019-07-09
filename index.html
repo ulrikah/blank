@@ -32,11 +32,12 @@
     		<!-- steps are injected dynamically inside this entity -->
   		</a-entity>
 
-			<a-sky color="#CDEFAB"></a-sky>
+			<a-sky color="#A0ABFF"></a-sky>
 			<!-- <a-box color="blue" width="0.1" rotation="0 45 0" 
 			position="-1 2 1" refresh-page> </a-box> -->
-			<a-entity hand-controls="hand: left" aabb-collider="objects: .step;" grab></a-entity>
-			<a-entity hand-controls="hand: right" aabb-collider="objects: .step;" grab></a-entity>
+			<!-- <a-text id="debug-text" value="Hello, World!" position="0 2 0"></a-text> -->
+			<a-entity vive-controls="hand: left" aabb-collider="objects: .step;" grab></a-entity>
+			<a-entity vive-controls="hand: right" aabb-collider="objects: .step;" grab></a-entity>
     </a-scene>
   </body>
 </html>
