@@ -53,7 +53,7 @@ AFRAME.registerComponent('transport', {
     }
   },
   init: function () {
-  	
+  	this.createSteps(this.data.layers);
   	['click', 'grabend'].forEach(e => this.el.addEventListener(e, function (evt) {
   		evt.target.setAttribute('material', 'color', invertColor(evt.target.getAttribute('material').color))
   		const layer = evt.target.getAttribute('layer')
@@ -134,9 +134,10 @@ AFRAME.registerComponent('transport', {
   	// create steps for each sequence layer
   	for (let i = 0; i < layers.length; i++)
   	{	
-	  	const nSteps = layers[i].steps.length
+  		const steps = layers[i].steps;
+	  	const nSteps = steps.length
+	  	const vels = layers[i].velocity;
 	  	const inc = arc / (nSteps-1);
-
 	  	for (let j = 0; j < nSteps; j++){
 	  		
 	  		// create new step
@@ -148,7 +149,11 @@ AFRAME.registerComponent('transport', {
 	  		step.setAttribute('position', [x, 1 + (0.2)*i, z].join(' '));
 	  		step.setAttribute('mixin', 'step');
 	  		step.setAttribute('class', 'step');
+	  		step.setAttribute('geometry', 'radius', map(vels[j], 0.5, 1.5, 0.05, 0.08))
 	  		step.setAttribute('layer', i);
+	  		steps[j]
+	  		? step.setAttribute('material', 'color', invertColor('#EF2D5E'))
+				: step.setAttribute('material', 'color', '#EF2D5E');
 	  		transportEl.appendChild(step);
 
 	  		degs += inc;
@@ -182,4 +187,8 @@ isChange = (layers) => {
 		}
 	}
 	return false;
+}
+
+map = (value, low1, high1, low2, high2) => {
+  return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }

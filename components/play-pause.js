@@ -4,7 +4,7 @@ AFRAME.registerComponent('play-pause', {
 	
   init: function () {
   	const playCol = "#7087CC";
-  	const pauseCol = "#EF2D5E";
+  	const pauseCol = "#F6F7A7";
   	['click', 'grabend'].forEach(e => this.el.addEventListener(e, function (evt) {
   		const color = evt.target.getAttribute('material').color;
   		Tone.Transport.toggle("+0.1")
