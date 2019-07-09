@@ -87,13 +87,14 @@ AFRAME.registerComponent('transport', {
   		{		
 		  	const layer = layers[i];
 				const steps = layer.steps;
+				const velocity = layer.velocity;
 				const nSteps = steps.length;
   			const inc = (arc / (nSteps-1));
 
 	  		for (let j = 0; j < nSteps; j ++ ){
 	  			// trigger sample if current step is active
 	  			if (steps[j]){
-	  				sampler.triggerAttackRelease(layer.note, '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j)
+	  				sampler.triggerAttackRelease(layer.note, '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j, velocity[j])
 		  		}
 
 		  		// we only need one animation schedule
