@@ -30,10 +30,10 @@ const sampler = new Tone.Sampler({
 })
 
 
-// sampler.connect(pingPong)
-// sampler.connect(wah)
+sampler.connect(pingPong)
+sampler.connect(wah)
 // sampler.sync() // why does this method take so long to execute the next sequence? is this even necessary?
-sampler.connect(Tone.Master)
+// sampler.connect(Tone.Master)
 sampler.volume.value = -20;
 
 // ____TONE END
