@@ -60,19 +60,20 @@
 				<a-entity mixin="light" position="0 0 40"></a-entity>
 			</a-entity>
 
+			<a-entity random-material geometry="primitive: sphere; radius: 2" tone-transport-toggle position="0 -1 -20"></a-entity>
 			<a-entity animation="property: rotation; to: 0 360 0; dur: 10000; easing: linear; loop: true">
-				<a-entity 
+				<a-entity
 					panner
 					random-material
 					geometry=
 					"	primitive: torusKnot;
 						p: 2; q: 2;
-						radius: 4; 
-						radiusTubular: 0.2;
+						radius: 1; 
+						radiusTubular: 0.05;
 						segmentsRadial: 8;
 						segmentsTubular: 100;"
 
-					position="0 -2 -40"
+					position="0 -2 -10"
 				>
 				</a-entity>
 			</a-entity>
