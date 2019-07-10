@@ -11,6 +11,7 @@ require('./components/grab.js')
 require('./components/aabb-collider.js')
 require('./components/refresh-page.js')
 require('./components/rotate.js')
+require('./components/panner.js')
 
 require('./instruments/sampler.js')
 

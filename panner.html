@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Panner </title>
+    <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
+    <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
+    <script type="text/javascript" src="bundle.js"></script>
+
+    <!-- A-Frame 3rd party components -->
+    <script src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
+		<script src="https://unpkg.com/aframe-entity-generator-component@3.0.1/dist/aframe-entity-generator-component.min.js"></script>
+		<script>
+      AFRAME.registerComponent('random-material', {
+        init: function () {
+          this.el.setAttribute('material', {
+            color: this.getRandomColor(),
+            metalness: Math.random(),
+            roughness: Math.random()
+          });
+        },
+
+        getRandomColor: function () {
+          var letters = '0123456789ABCDEF'.split('');
+          var color = '#';
+          for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+        }
+      });
+
+      AFRAME.registerComponent('random-torus-knot', {
+        init: function () {
+          this.el.setAttribute('geometry', {
+            primitive: 'torusKnot',
+            radius: Math.random() * 10,
+            radiusTubular: Math.random() * .75,
+            p: Math.round(Math.random() * 10),
+            q: Math.round(Math.random() * 10)
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene background="color: #111" cursor="rayOrigin: mouse">
+    	<a-camera wasd-controls look-controls position="0 0 0"></a-camera>
+			<a-assets>
+				<a-mixin id="light" geometry="primitive: sphere; radius: 1.5" material="color: #FFF; shader: flat" light="color: #DDDDFF; distance: 120; intensity: 2; type: point"></a-mixin>
+				<a-mixin id="torusKnot" random-torus-knot random-material random-position="min: -60 -60 -80; max: 60 60 40"></a-mixin>
+			</a-assets>
+
+			<!-- <a-entity entity-generator="mixin: torusKnot; num: 10"></a-entity> -->
+
+			<a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
+				<a-entity mixin="light" position="30 0 0"></a-entity>
+			</a-entity>
+			<a-entity animation="property: rotation; to: 360 0 0; dur: 4000; easing: linear; loop: true">
+				<a-entity mixin="light" position="0 0 40"></a-entity>
+			</a-entity>
+
+			<a-entity animation="property: rotation; to: 0 360 0; dur: 10000; easing: linear; loop: true">
+				<a-entity 
+					panner
+					random-material
+					geometry=
+					"	primitive: torusKnot;
+						p: 2; q: 2;
+						radius: 4; 
+						radiusTubular: 0.2;
+						segmentsRadial: 8;
+						segmentsTubular: 100;"
+
+					position="0 -2 -40"
+				>
+				</a-entity>
+			</a-entity>
+			<!-- VR interaction -->
+			<a-entity vive-controls="hand: left"></a-entity>
+			<a-entity vive-controls="hand: right"></a-entity>
+    </a-scene>
+  </body>
+</html>
