@@ -1,5 +1,6 @@
+const Tone = require('tone')
+
 AFRAME.registerComponent('panner-object', {
-	
   init: function () {
 		this.camera = document.querySelector('a-camera')
   	this.pos = new THREE.Vector3();

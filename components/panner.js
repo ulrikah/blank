@@ -5,17 +5,17 @@ AFRAME.registerComponent('panner', {
   init: function () {
 		this.FOLDER = "../assets/100bpm_luftig/"
 		this.TRACKS = [
-		{ url:	"bass.mp3", volume: -6},
-		{ url:	"drums1.mp3", volume: -6},
-		{ url:	"drums2.mp3", volume: -6},
-		{ url:	"ice1.mp3", volume: -6},
-		{ url:	"ice2.mp3", volume: -6},
-		{ url:	"sfx1.mp3", volume: -6},
-		{ url:	"sfx2.mp3", volume: -6},
-		{ url:	"comet.mp3", volume: -20},
+		{ url:	"bass.mp3", volume: 0},
+		{ url:	"drums1.mp3", volume: 0},
+		{ url:	"drums2.mp3", volume: 0},
+		{ url:	"ice1.mp3", volume: 0},
+		{ url:	"ice2.mp3", volume: 0},
+		{ url:	"sfx1.mp3", volume: 0},
+		{ url:	"sfx2.mp3", volume: 0},
+		{ url:	"comet.mp3", volume: -10},
 		]
   	
-		this.animation = document.getElementById('musicAnimation');
+		this.pannerParent = document.getElementById('panner');
 
 		this.TRACKS.forEach( (t) => {
 			const panner = new Tone.Panner3D(
@@ -37,12 +37,11 @@ AFRAME.registerComponent('panner', {
 			player.connect(panner)
 			player.sync()
 
-			this.animation.appendChild(this.createPanner(panner))
+			this.pannerParent.appendChild(this.createPannerDomElement(panner))
 		});
   },
 
-  createPanner: function (panner) {
-	
+  createPannerDomElement: function (panner, animate = true) {
 		const pannerObj = document.createElement('a-entity');
 		pannerObj.setAttribute('random-material', '')
 		pannerObj.setAttribute('geometry', {
@@ -51,7 +50,28 @@ AFRAME.registerComponent('panner', {
 		});
 		pannerObj.setAttribute('panner-object', { panner : panner	});
 		pannerObj.setAttribute('position', [this.randomInt(-50, 50), this.randomInt(-50, 50), this.randomInt(-50, -50)].join(" "))
+
+		if (animate)
+		{
+			const anim = this.createAnimation();
+			anim.appendChild(pannerObj)
+			return anim;
+		}
 		return pannerObj
+  },
+
+  createAnimation: function () {
+  	const anim = document.createElement('a-entity')
+  	anim.setAttribute('animation', {
+  		property: 'rotation',
+  		to: [Math.random() < 0.5 ? (-1)*this.randomInt(0, 360) : this.randomInt(0, 360),
+  				 360,
+  				 this.randomInt(0, 360)].join(" "),
+  		dur: this.randomInt(10000, 20000),
+  		easing: 'linear',
+  		loop: true
+  	});
+  	return anim;
   },
 
   randomInt: function (min, max) {
