@@ -3,10 +3,12 @@ const Tone = require('tone');
 AFRAME.registerComponent('panner', {
 	
   init: function () {
-  	this.camera = document.querySelector('a-camera')
+		this.FOLDER = "../assets/100bpm_luftig/"
+		this.TRACKS = ["bass.mp3", "drums1.mp3", "drums2.mp3", "ice1.mp3", "ice2.mp3", "sfx1.mp3", "sfx2.mp3", "sfx3.mp3"]
+  	
+		this.camera = document.querySelector('a-camera')
   	this.pos = new THREE.Vector3();
 
-  	// Tone
 		this.panner = new Tone.Panner3D(
 			{
 				positionX  : 0 ,
@@ -17,10 +19,17 @@ AFRAME.registerComponent('panner', {
 			}
 		).toMaster()
 
-		this.player = new Tone.Player("../assets/100bpm_luftig.mp3")
-		this.player.autostart = true;
-		this.player.volume.value = -6;
-		this.player.connect(this.panner).sync()
+		this.TRACKS.forEach( (t) => {
+			const player = new Tone.Player()
+			player.load(this.FOLDER + t, () => {
+				Tone.Transport.schedule( () => {
+					player.start(0)
+				}, '8n');
+			});
+			player.volume.value = -6;
+			player.connect(this.panner)
+			player.sync()
+		});
   	
   },
 

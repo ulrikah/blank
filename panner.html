@@ -6,10 +6,6 @@
     <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
     <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
     <script type="text/javascript" src="bundle.js"></script>
-
-    <!-- A-Frame 3rd party components -->
-    <script src="https://unpkg.com/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
-		<script src="https://unpkg.com/aframe-entity-generator-component@3.0.1/dist/aframe-entity-generator-component.min.js"></script>
 		<script>
       AFRAME.registerComponent('random-material', {
         init: function () {
@@ -51,8 +47,6 @@
 				<a-mixin id="torusKnot" random-torus-knot random-material random-position="min: -60 -60 -80; max: 60 60 40"></a-mixin>
 			</a-assets>
 
-			<!-- <a-entity entity-generator="mixin: torusKnot; num: 10"></a-entity> -->
-
 			<a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
 				<a-entity mixin="light" position="30 0 0"></a-entity>
 			</a-entity>
@@ -60,6 +54,7 @@
 				<a-entity mixin="light" position="0 0 40"></a-entity>
 			</a-entity>
 
+			<a-text value="Play |  Pause" position="-1.5 2 -20" width="15"></a-text>
 			<a-entity random-material geometry="primitive: sphere; radius: 2" tone-transport-toggle position="0 -1 -20"></a-entity>
 			<a-entity animation="property: rotation; to: 0 360 0; dur: 10000; easing: linear; loop: true">
 				<a-entity
@@ -72,7 +67,6 @@
 						radiusTubular: 0.05;
 						segmentsRadial: 8;
 						segmentsTubular: 100;"
-
 					position="0 -2 -10"
 				>
 				</a-entity>
