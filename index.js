@@ -12,9 +12,11 @@ require('./components/aabb-collider.js')
 require('./components/refresh-page.js')
 require('./components/rotate.js')
 require('./components/panner.js')
+require('./components/panner-object.js')
 require('./components/tone-transport-toggle.js')
 
-require('./instruments/sampler.js')
+
+// require('./instruments/synth.js')
 
 // AFRAME state
 require('./state/state.js')

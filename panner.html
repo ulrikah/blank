@@ -41,10 +41,16 @@
   </head>
   <body>
     <a-scene background="color: #111" cursor="rayOrigin: mouse">
-    	<a-camera wasd-controls look-controls position="0 0 0"></a-camera>
+    	<a-camera wasd-controls look-controls position="0 50 100"></a-camera>
 			<a-assets>
-				<a-mixin id="light" geometry="primitive: sphere; radius: 1.5" material="color: #FFF; shader: flat" light="color: #DDDDFF; distance: 120; intensity: 2; type: point"></a-mixin>
-				<a-mixin id="torusKnot" random-torus-knot random-material random-position="min: -60 -60 -80; max: 60 60 40"></a-mixin>
+				<a-mixin id="light" light="color: #DDDDFF; distance: 120; intensity: 2; type: directional"></a-mixin>
+				<a-mixin id="torusKnot" random-material
+					geometry="primitive: torusKnot; p: 2; q: 2; radius: 1;
+						radiusTubular: 0.05;
+						segmentsRadial: 8;
+						segmentsTubular: 100;"
+					>
+				</a-mixin>
 			</a-assets>
 
 			<a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
@@ -54,21 +60,9 @@
 				<a-entity mixin="light" position="0 0 40"></a-entity>
 			</a-entity>
 
-			<a-text value="Play |  Pause" position="-1.5 2 -20" width="15"></a-text>
-			<a-entity random-material geometry="primitive: sphere; radius: 2" tone-transport-toggle position="0 -1 -20"></a-entity>
-			<a-entity animation="property: rotation; to: 0 360 0; dur: 10000; easing: linear; loop: true">
-				<a-entity
-					panner
-					random-material
-					geometry=
-					"	primitive: torusKnot;
-						p: 2; q: 2;
-						radius: 1; 
-						radiusTubular: 0.05;
-						segmentsRadial: 8;
-						segmentsTubular: 100;"
-					position="0 -2 -10"
-				>
+			<a-text value="Play |  Pause" position="-1.5 3 0" width="15"></a-text>
+			<a-entity random-material geometry="primitive: sphere; radius: 2" tone-transport-toggle position="0 0 0"></a-entity>
+			<a-entity panner id="musicAnimation" animation="property: rotation; to: 0 360 0; dur: 10000; easing: linear; loop: true">
 				</a-entity>
 			</a-entity>
 			<!-- VR interaction -->
