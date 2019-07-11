@@ -4,8 +4,19 @@ AFRAME.registerComponent('panner', {
 	
   init: function () {
 		this.FOLDER = "../assets/100bpm_luftig/"
-		this.TRACKS = ["bass.mp3", "drums1.mp3", "drums2.mp3", "ice1.mp3", "ice2.mp3", "sfx1.mp3", "sfx2.mp3", "sfx3.mp3"]
+		this.TRACKS = [
+		{ url:	"bass.mp3", volume: -6},
+		{ url:	"drums1.mp3", volume: -6},
+		{ url:	"drums2.mp3", volume: -6},
+		{ url:	"ice1.mp3", volume: -6},
+		{ url:	"ice2.mp3", volume: -6},
+		{ url:	"sfx1.mp3", volume: -6},
+		{ url:	"sfx2.mp3", volume: -6},
+		{ url:	"comet.mp3", volume: -20},
+		]
   	
+		this.animation = document.getElementById('musicAnimation');
+
 		this.TRACKS.forEach( (t) => {
 			const panner = new Tone.Panner3D(
 				{
@@ -17,21 +28,20 @@ AFRAME.registerComponent('panner', {
 				}
 			).toMaster()
 			const player = new Tone.Player()
-			player.load(this.FOLDER + t, () => {
+			player.load(this.FOLDER + t.url, () => {
 				Tone.Transport.schedule( () => {
 					player.start(0)
 				}, '8n');
 			});
-			player.volume.value = -6;
+			player.volume.value = t.volume;
 			player.connect(panner)
 			player.sync()
 
-			this.createPanner(panner)
+			this.animation.appendChild(this.createPanner(panner))
 		});
   },
 
   createPanner: function (panner) {
-  	this.animation = document.getElementById('musicAnimation')
 	
 		const pannerObj = document.createElement('a-entity');
 		pannerObj.setAttribute('random-material', '')
@@ -41,7 +51,7 @@ AFRAME.registerComponent('panner', {
 		});
 		pannerObj.setAttribute('panner-object', { panner : panner	});
 		pannerObj.setAttribute('position', [this.randomInt(-50, 50), this.randomInt(-50, 50), this.randomInt(-50, -50)].join(" "))
-		this.animation.appendChild(pannerObj);
+		return pannerObj
   },
 
   randomInt: function (min, max) {
