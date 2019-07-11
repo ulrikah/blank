@@ -2,6 +2,8 @@
 .DS_Store
 bundle.js
 CNAME
+.surgeignore
+
 # Logs
 logs
 *.log
