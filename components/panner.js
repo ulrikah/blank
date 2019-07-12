@@ -1,21 +1,21 @@
 const Tone = require('tone');
 
-AFRAME.registerComponent('panner', {
+AFRAME.registerComponent('panner-container', {
 	
   init: function () {
 		this.FOLDER = "../assets/100bpm_luftig/"
 		this.TRACKS = [
-		{ url:	"bass.mp3", volume: 0},
-		{ url:	"drums1.mp3", volume: 0},
-		{ url:	"drums2.mp3", volume: 0},
-		{ url:	"ice1.mp3", volume: 0},
-		{ url:	"ice2.mp3", volume: 0},
-		{ url:	"sfx1.mp3", volume: 0},
-		{ url:	"sfx2.mp3", volume: 0},
-		{ url:	"comet.mp3", volume: -10},
+			{ url:	"bass.mp3", volume: 0},
+			{ url:	"drums1.mp3", volume: 0},
+			{ url:	"drums2.mp3", volume: 0},
+			{ url:	"ice1.mp3", volume: 0},
+			{ url:	"ice2.mp3", volume: 0},
+			{ url:	"sfx1.mp3", volume: 0},
+			{ url:	"sfx2.mp3", volume: 0},
+			{ url:	"comet.mp3", volume: -10},
 		]
   	
-		this.pannerParent = document.getElementById('panner');
+		this.pannerParent = document.getElementById('panner-container');
 
 		this.TRACKS.forEach( (t) => {
 			const panner = new Tone.Panner3D(
@@ -29,6 +29,7 @@ AFRAME.registerComponent('panner', {
 			).toMaster()
 			const player = new Tone.Player()
 			player.load(this.FOLDER + t.url, () => {
+				// console.log("Successfully loaded sample", t.url)
 				Tone.Transport.schedule( () => {
 					player.start(0)
 				}, '8n');
@@ -37,38 +38,39 @@ AFRAME.registerComponent('panner', {
 			player.connect(panner)
 			player.sync()
 
-			this.pannerParent.appendChild(this.createPannerDomElement(panner))
+			this.pannerParent.appendChild(this.createPannerDomEl(panner, false))
 		});
   },
 
-  createPannerDomElement: function (panner, animate = true) {
-		const pannerObj = document.createElement('a-entity');
-		pannerObj.setAttribute('random-material', '')
-		pannerObj.setAttribute('geometry', {
+  createPannerDomEl: function (panner, animate = true) {
+		const pannedEl = document.createElement('a-entity');
+		pannedEl.setAttribute('random-material', '')
+		pannedEl.setAttribute('geometry', {
 			primitive: 'sphere',
 			radius: 1,
 		});
-		pannerObj.setAttribute('panner-object', { panner : panner	});
-		pannerObj.setAttribute('position', [this.randomInt(-50, 50), this.randomInt(-50, 50), this.randomInt(-50, -50)].join(" "))
+		pannedEl.setAttribute('panner-object', { panner : panner	});
+		pannedEl.setAttribute('position', [this.randomInt(-20, 20), this.randomInt(-20, 20), this.randomInt(-20, -20)].join(" "))
 
 		if (animate)
 		{
 			const anim = this.createAnimation();
-			anim.appendChild(pannerObj)
+			anim.appendChild(pannedEl)
 			return anim;
 		}
-		return pannerObj
+		return pannedEl
   },
 
   createAnimation: function () {
   	const anim = document.createElement('a-entity')
   	anim.setAttribute('animation', {
   		property: 'rotation',
-  		to: [Math.random() < 0.5 ? (-1)*this.randomInt(0, 360) : this.randomInt(0, 360),
+  		to: [this.randomInt(0, 360),
   				 360,
   				 this.randomInt(0, 360)].join(" "),
   		dur: this.randomInt(10000, 20000),
   		easing: 'linear',
+  		dir: Math.random() < 0.5 ? 'reverse' : 'normal',
   		loop: true
   	});
   	return anim;
