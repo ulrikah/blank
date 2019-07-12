@@ -33,9 +33,9 @@ AFRAME.registerComponent('panner-object', {
   	return fft.reduce((a,b) => a + b, 0) / fft.length
   },
 
-  mapFFTAvg2Radius(fftAvg, min = -200, max = -100) {
+  mapFFTAvg2Radius(fftAvg, min = -200, max = -50) {
   	fftAvg = THREE.Math.clamp(fftAvg, min, max); // in case of Inf or -Inf
-  	return THREE.Math.mapLinear(fftAvg, min, max, 0.5, 2);
+  	return THREE.Math.mapLinear(fftAvg, min, max, 0.5, 3);
   }
 
 });

@@ -3,6 +3,9 @@
 bundle.js
 CNAME
 .surgeignore
+test.html
+
+### default .gitignore for a node project below
 
 # Logs
 logs

@@ -45,7 +45,7 @@
 			<a-assets>
 				<a-mixin id="light" light="color: #DDDDFF; distance: 120; intensity: 2; type: directional"></a-mixin>
 				<a-mixin id="torusKnot" random-material
-					geometry="primitive: torusKnot; p: 2; q: 2; radius: 1;
+					geometry="primitive: torusKnot; p: 2; q: 2;
 						radiusTubular: 0.05;
 						segmentsRadial: 8;
 						segmentsTubular: 100;"
@@ -60,8 +60,8 @@
 				<a-entity mixin="light" position="0 0 40"></a-entity>
 			</a-entity>
 
-			<a-entity visible="false" random-material geometry="primitive: sphere; radius: 0.5" tone-transport-toggle position="0 0 0">
-				<a-text value="Play |  Pause" position="-0.5 1 0" width="5"></a-text>
+			<a-entity tone-transport-toggle visible="false" random-material geometry="primitive: sphere; radius: 0.5" position="0 0 0">
+				<a-text value="play / pause" position="-0.5 1 0" width="5"></a-text>
 			</a-entity>
 			<a-entity panner-container id="panner-container">
 			</a-entity>

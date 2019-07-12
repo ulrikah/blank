@@ -15,14 +15,18 @@ AFRAME.registerComponent('panner-container', {
 			{ url:	"comet.mp3", volume: -10},
 		]
   	
-		this.pannerParent = document.getElementById('panner-container');
-		this.buffer = new Tone.Buffers(this.TRACKS.map( t => this.FOLDER + t.url), () => {
-			// callback from buffer
-			console.log("LOADED ALL TRACKS")
-			document.querySelector('[tone-transport-toggle]').setAttribute('visible', 'true')
+		this.buffers = new Tone.Buffers(this.TRACKS.map( t => this.FOLDER + t.url), () => {
+			// callback from onload
+			this.createPanner()
+			const toggle = document.querySelector('[tone-transport-toggle]')
+			toggle.setAttribute('visible', 'true')
 		})
+  },
 
-		this.TRACKS.forEach( (t) => {
+  createPanner: function() {
+		this.pannerParent = document.getElementById('panner-container');
+		const buffers = Object.values(this.buffers._buffers)
+		buffers.forEach( b => {
 			const panner = new Tone.Panner3D(
 				{
 					positionX  : 0 ,
@@ -32,28 +36,21 @@ AFRAME.registerComponent('panner-container', {
 					rolloffFactor  : 0.5
 				}
 			).toMaster()
-			const player = new Tone.Player()
-			player.load(this.FOLDER + t.url, () => {
-				// console.log("Successfully loaded sample", t.url)
-				Tone.Transport.schedule( () => {
-					player.start(0)
-				}, '8n');
-			});
-			player.volume.value = t.volume;
+			const player = new Tone.Player(b._buffer)
+			// NB - hacky indexing here will cause problems if not all buffers are loaded for some reason
+			player.volume.value = this.TRACKS[buffers.indexOf(b)].volume;
 			player.connect(panner)
 			player.sync()
-
-			this.pannerParent.appendChild(this.createPannerDomEl(panner, false))
-		});
+			Tone.Transport.schedule( () => { player.start(0) }, '8n');
+			this.pannerParent.appendChild(this.createPannerDomEl(panner, true))
+		})
   },
 
   createPannerDomEl: function (panner, animate = true) {
 		const pannedEl = document.createElement('a-entity');
-		pannedEl.setAttribute('random-material', '')
-		pannedEl.setAttribute('geometry', {
-			primitive: 'sphere',
-			radius: 1,
-		});
+		pannedEl.setAttribute('random-material', '');
+		pannedEl.setAttribute('mixin', 'torusKnot');
+		pannedEl.setAttribute('geometry', 'radius', 1)
 		pannedEl.setAttribute('panner-object', { panner : panner	});
 		pannedEl.setAttribute('position', [this.randomInt(-20, 20), this.randomInt(-20, 20), this.randomInt(-20, -20)].join(" "))
 
@@ -70,9 +67,9 @@ AFRAME.registerComponent('panner-container', {
   	const anim = document.createElement('a-entity')
   	anim.setAttribute('animation', {
   		property: 'rotation',
-  		to: [this.randomInt(0, 360),
+  		to: [Math.random() < 0.5 ? (-1) * 360 : 360,
   				 360,
-  				 this.randomInt(0, 360)].join(" "),
+  				 Math.random() < 0.5 ? (-1) * 360 : 360].join(" "),
   		dur: this.randomInt(10000, 20000),
   		easing: 'linear',
   		dir: Math.random() < 0.5 ? 'reverse' : 'normal',
