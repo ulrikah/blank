@@ -10,12 +10,17 @@ AFRAME.registerComponent('panner-container', {
 			{ url:	"drums2.mp3", volume: 0},
 			{ url:	"ice1.mp3", volume: 0},
 			{ url:	"ice2.mp3", volume: 0},
-			{ url:	"sfx1.mp3", volume: 0},
-			{ url:	"sfx2.mp3", volume: 0},
+			{ url:	"sfx1.mp3", volume: -8},
+			{ url:	"sfx2.mp3", volume: -8},
 			{ url:	"comet.mp3", volume: -10},
 		]
   	
 		this.pannerParent = document.getElementById('panner-container');
+		this.buffer = new Tone.Buffers(this.TRACKS.map( t => this.FOLDER + t.url), () => {
+			// callback from buffer
+			console.log("LOADED ALL TRACKS")
+			document.querySelector('[tone-transport-toggle]').setAttribute('visible', 'true')
+		})
 
 		this.TRACKS.forEach( (t) => {
 			const panner = new Tone.Panner3D(
