@@ -14,9 +14,8 @@ require('./components/rotate.js')
 require('./components/panner.js')
 require('./components/panner-object.js')
 require('./components/tone-transport-toggle.js')
-
-
-// require('./instruments/synth.js')
+require('./components/random-material.js')
+require('./components/random-torus-knot.js')
 
 // AFRAME state
 require('./state/state.js')

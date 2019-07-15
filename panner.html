@@ -6,38 +6,6 @@
     <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
     <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
     <script type="text/javascript" src="bundle.js"></script>
-		<script>
-      AFRAME.registerComponent('random-material', {
-        init: function () {
-          this.el.setAttribute('material', {
-            color: this.getRandomColor(),
-            metalness: Math.random(),
-            roughness: Math.random()
-          });
-        },
-
-        getRandomColor: function () {
-          var letters = '0123456789ABCDEF'.split('');
-          var color = '#';
-          for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-          }
-          return color;
-        }
-      });
-
-      AFRAME.registerComponent('random-torus-knot', {
-        init: function () {
-          this.el.setAttribute('geometry', {
-            primitive: 'torusKnot',
-            radius: Math.random() * 10,
-            radiusTubular: Math.random() * .75,
-            p: Math.round(Math.random() * 10),
-            q: Math.round(Math.random() * 10)
-          });
-        }
-      });
-    </script>
   </head>
   <body>
     <a-scene background="color: #111" cursor="rayOrigin: mouse">
