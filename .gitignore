@@ -3,7 +3,7 @@
 bundle.js
 CNAME
 .surgeignore
-test.html
+*test.html
 
 ### default .gitignore for a node project below
 
