@@ -5,14 +5,14 @@ AFRAME.registerComponent('panner-container', {
   init: function () {
 		this.FOLDER = "../assets/100bpm_luftig/"
 		this.TRACKS = [
-			{ url:	"bass.mp3", volume: 0},
+			// { url:	"bass.mp3", volume: 0},
 			{ url:	"drums1.mp3", volume: 0},
-			{ url:	"drums2.mp3", volume: 0},
-			{ url:	"ice1.mp3", volume: 0},
-			{ url:	"ice2.mp3", volume: 0},
-			{ url:	"sfx1.mp3", volume: -8},
-			{ url:	"sfx2.mp3", volume: -8},
-			{ url:	"comet.mp3", volume: -10},
+			// { url:	"drums2.mp3", volume: 0},
+			// { url:	"ice1.mp3", volume: 0},
+			// { url:	"ice2.mp3", volume: 0},
+			// { url:	"sfx1.mp3", volume: -8},
+			// { url:	"sfx2.mp3", volume: -8},
+			// { url:	"comet.mp3", volume: -10},
 		]
   	
 		this.buffers = new Tone.Buffers(this.TRACKS.map( t => this.FOLDER + t.url), () => {

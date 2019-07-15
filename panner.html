@@ -60,14 +60,14 @@
 				<a-entity mixin="light" position="0 0 40"></a-entity>
 			</a-entity>
 
-			<a-entity tone-transport-toggle visible="false" random-material geometry="primitive: sphere; radius: 0.5" position="0 0 0">
+			<a-entity class="toggle" tone-transport-toggle visible="false" random-material geometry="primitive: sphere; radius: 0.5" position="0 0 -10">
 				<a-text value="play / pause" position="-0.5 1 0" width="5"></a-text>
 			</a-entity>
 			<a-entity panner-container id="panner-container">
 			</a-entity>
 			<!-- VR interaction -->
-			<a-entity vive-controls="hand: left"></a-entity>
-			<a-entity vive-controls="hand: right"></a-entity>
+			<a-entity laser-controls="hand: left;"></a-entity>
+			<a-entity laser-controls="hand: right"></a-entity>
     </a-scene>
   </body>
 </html>
