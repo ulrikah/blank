@@ -2,6 +2,7 @@
 require('aframe');
 require('aframe-state-component');
 require('aframe-event-set-component');
+require('aframe-haptics-component');
 require('aframe-log-component');
 
 // AFRAME components

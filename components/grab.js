@@ -46,6 +46,7 @@ AFRAME.registerComponent('grab', {
     hitEl.removeState(this.GRABBED_STATE);
     hitEl.setAttribute('dynamic-body', '')
     hitEl.emit('grabend');
+    this.el.components.haptics.pulse(0.2, 50); // triggers a haptic feedback when grab ends
     this.hitEl = undefined;
   },
 
