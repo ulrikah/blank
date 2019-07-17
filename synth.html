@@ -14,9 +14,20 @@
 				<a-mixin id="light" light="color: #DDDDFF; distance: 120; intensity: 2; type: directional"></a-mixin>
 			</a-assets>
 
-			<a-log material="color: #FFF" text="color: #111" position="-2 0 -4"></a-log>
-			<a-entity synth tone-transport-toggle random-torus-knot random-material position="0 0 -50"> </a-entity>
-			<a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
+			<!-- <a-log material="color: #FFF" text="color: #111" position="-2 0 -4"></a-log>-->
+			<a-entity 
+				geometry="primitive: box; width: 4; height: 3; depth: 4" 
+				material="wireframe: true; wireframeLinewidth : 5"
+				position="0 -3 -5"
+			>
+				<a-entity 
+					synth
+					random-material
+					geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5" 
+				></a-entity>
+			</a-entity>
+			<a-entity synth geometry="primitive: sphere; radius: 1" tone-transport-toggle random-material position="0 5 -10"> </a-entity>
+			<a-entity animation="property: rotation; to: 360 360 360; dur: 10000; easing: linear; loop: true">
 				<a-entity mixin="light" position="30 0 0"></a-entity>
 			</a-entity>
 			<!-- VR interaction -->

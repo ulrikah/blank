@@ -2,10 +2,11 @@ const Tone = require('tone')
 
 AFRAME.registerComponent('synth', {
   init: function () {
-		var reverb = new Tone.Reverb();
-		reverb.generate().then( () => console.log("Reverb generated"))
 
-		var filterHigh = new Tone.Filter({
+		this.reverb = new Tone.Reverb();
+		this.reverb.generate().then( () => console.log("Reverb generated"))
+
+		this.filterHigh = new Tone.Filter({
 				type  : "highpass" ,
 				frequency  : 20 ,
 				rolloff  : -12 ,
@@ -13,30 +14,22 @@ AFRAME.registerComponent('synth', {
 				gain  : 0
 		});
 
-		var filterLow = new Tone.Filter({
-				type  : "lowpass" ,
-				frequency  : 20 ,
-				rolloff  : -12 ,
-				Q  : 1 ,
-				gain  : 0
-		})
-
-		var phaser = new Tone.Phaser({
+		this.phaser = new Tone.Phaser({
 			"frequency" : 2,
 			"octaves" : 2,
 			"baseFrequency" : 200
 		});
 
-		var delay = new Tone.PingPongDelay({
+		this.delay = new Tone.PingPongDelay({
 			"delayTime" : "8n",
 			"feedback" : 0.6,
 			"wet" : 0.3
 		})
 
-		var distortion = new Tone.Distortion();
-		distortion.wet.value = 0.2;
+		this.distortion = new Tone.Distortion();
+		this.distortion.wet.value = 0.2;
 
-		var synth = new Tone.PolySynth(4, Tone.Synth);
+		const synth = new Tone.PolySynth(4, Tone.Synth);
 		synth.set('detune', -20)
 
 		synth.set( { 
@@ -58,14 +51,13 @@ AFRAME.registerComponent('synth', {
 			}
 		})
 
-		synth.chain(reverb, delay, filterHigh, distortion, Tone.Master);
+		synth.chain(this.reverb, this.delay, this.filterHigh, this.distortion, Tone.Master);
 
 		const notes = ["C3", "E3", "G3"]
 		ctrl = new Tone.CtrlPattern(notes, Tone.CtrlPattern.Type.AlternateUp)
 
 		let note = ctrl.next();
 		var loop = new Tone.Loop(function(time){
-			// synth.triggerAttackRelease(notes[Math.floor(Math.random()*notes.length)], "2n", time)
 
 			if (Math.random() < 0.1)
 			{
@@ -92,6 +84,10 @@ AFRAME.registerComponent('synth', {
 
 		Tone.Master.volume.value = 0;
 		Tone.Transport.bpm = 130
+	},
+
+	update: function () {
+		Tone.Transport.state
 	}
 });
 
