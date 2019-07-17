@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> Synth </title>
+    <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
+    <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
+    <script type="text/javascript" src="bundle.js"></script>
+  </head>
+  <body>
+    <a-scene physics="debug: false; gravity: -1; restitution: 0.9">
+      <a-assets>      
+        <a-asset-item id="gun-obj" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Fgun-1NI7Q2_vScX-model.obj?1510641419352"></a-asset-item>
+        <a-asset-item id="gun-mtl" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Fgun-1NI7Q2_vScX-materials.mtl?1510641419027"></a-asset-item>
+        <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
+        <img id="orangesrc" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ff7d31bc38804a89a6b288f718296cc27.jpg?1510638410703" crossorigin="anonymous" /> 
+        <img id="orangebump" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Forangebump1.jpg?1510639083481" crossorigin="anonymous" /> 
+      </a-assets>
+      
+      <a-camera position="-3 3 5"></a-camera>
+      <a-entity id="env1" environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
+      
+      <a-entity ball-shooter id="gun" sound="src: #sfx-gun; autoplay: false;" obj-model="obj: #gun-obj; mtl: #gun-mtl" position="0 2 0" shadow rotation="0 90 0"></a-entity>      
+      <!-- Physics terrain -->
+      
+      <a-box width="75" height="0.1" depth="75" position="0 -0.05 0" static-body visible="false"></a-box>
+      <!-- Blocks row 1 -->
+      
+      <a-box class="wall" collide-sound width="2" height="5" depth="0.3" position="0 0.5 -4" color="#a50026" static-body force-pushable shadow></a-box>
+      <a-box class="wall" collide-sound width="6" height="5" depth="0.3" position="-1.1 0.5 -3" rotation="0 90 0" color="#a50026" static-body force-pushable shadow></a-box>
+      <a-box class="wall" collide-sound width="6" height="5" depth="0.3" position="1.1 0.5 -3" rotation="0 -90 0" color="#a50026" static-body force-pushable shadow></a-box>
+    </a-scene>
+  </body>
+</html>

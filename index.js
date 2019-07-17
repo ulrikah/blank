@@ -4,6 +4,8 @@ require('aframe-state-component');
 require('aframe-event-set-component');
 require('aframe-haptics-component');
 require('aframe-log-component');
+require('aframe-physics-system');
+require('aframe-environment-component');
 
 // AFRAME components
 require('./components/cursor-listener.js')
@@ -18,6 +20,8 @@ require('./components/panner-object.js')
 require('./components/tone-transport-toggle.js')
 require('./components/random-material.js')
 require('./components/random-torus-knot.js')
+require('./components/ball-shooter.js')
+require('./components/collide-sound.js')
 require('./components/synth.js')
 
 // AFRAME state
