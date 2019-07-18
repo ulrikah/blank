@@ -1,16 +1,20 @@
 const Tone = require('tone');
+const noiseSynth = new Tone.MembraneSynth().toMaster();
 
 AFRAME.registerComponent('collide-sound', {
 	
   init: function () {
-  	const noiseSynth = new Tone.MembraneSynth().toMaster();
   	noiseSynth.volume.value = -10;
+		this.maxVel = 1;
+		this.minVel = 0;
+		this.triggerSound = this.triggerSound.bind(this)
+		this.el.addEventListener('collide', this.triggerSound);
+  },
 
-		this.el.addEventListener('collide', function (e) {
-			if (e.detail.target.el.classList.contains('wall'))
-			{
-				noiseSynth.triggerAttackRelease("C2", "8n");
-			}
-		});
+  triggerSound: function(e) {
+		let vel = e.detail.body.velocity.length() // euc length from origo
+		vel = THREE.Math.mapLinear(vel, 1, 5, this.minVel, this.maxVel)
+		vel = THREE.Math.clamp(vel, this.minVel, this.maxVel);
+		noiseSynth.triggerAttackRelease("C2", "8n", Tone.now(), vel);
   }
 });
