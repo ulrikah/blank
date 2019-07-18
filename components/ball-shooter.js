@@ -16,7 +16,7 @@ AFRAME.registerComponent('ball-shooter', {
 
   shoot: function () {
     const ball = this.createBall()
-    ball.setAttribute('velocity', '-8 0 -2');
+    ball.setAttribute('velocity', '-8 0 -10');
     AFRAME.scenes[0].appendChild(ball);
     this.el.components.sound.playSound();
   },

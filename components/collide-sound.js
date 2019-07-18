@@ -1,20 +1,28 @@
 const Tone = require('tone');
 const noiseSynth = new Tone.MembraneSynth().toMaster();
+noiseSynth.volume.value = -10;
 
 AFRAME.registerComponent('collide-sound', {
 	
   init: function () {
-  	noiseSynth.volume.value = -10;
+  	const el = this.el
+  	this.height = el.getAttribute('geometry').height; // assuming position.y === 0;
 		this.maxVel = 1;
 		this.minVel = 0;
+		this.scale = ['Eb2','F2','G2','Ab2','Bb2','C3','D3','Eb3'] // Eb major scale
 		this.triggerSound = this.triggerSound.bind(this)
-		this.el.addEventListener('collide', this.triggerSound);
+		el.addEventListener('collide', this.triggerSound);
   },
 
   triggerSound: function(e) {
+  	const y = e.detail.body.position.y;
+  	const i = Math.round(THREE.Math.mapLinear(y, 0, this.height, 0, this.scale.length));
+  	const note = this.scale[i];
+
 		let vel = e.detail.body.velocity.length() // euc length from origo
 		vel = THREE.Math.mapLinear(vel, 1, 5, this.minVel, this.maxVel)
 		vel = THREE.Math.clamp(vel, this.minVel, this.maxVel);
-		noiseSynth.triggerAttackRelease("C2", "8n", Tone.now(), vel);
-  }
+		
+		noiseSynth.triggerAttackRelease(note, "8n", Tone.now(), vel);
+  },
 });

@@ -16,7 +16,7 @@
         <img id="orangesrc" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ff7d31bc38804a89a6b288f718296cc27.jpg?1510638410703" crossorigin="anonymous" /> 
         <img id="orangebump" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Forangebump1.jpg?1510639083481" crossorigin="anonymous" /> 
         
-        <a-mixin id="wall" class="wall" collide-sound material="color: #fff; wireframe: falsedw; wireframeLinewidth: 10" static-body force-pushable shadow geometry="primitive: box; height: 5; depth: 0.3"></a-mixin>
+        <a-mixin id="wall" class="wall" geometry="primitive: box; height: 5; depth: 0.3"collide-sound material="color: #fff; wireframe: falsedw; wireframeLinewidth: 10" static-body force-pushable shadow ></a-mixin>
       </a-assets>
       
       <a-camera position="-3 3 5"></a-camera>
@@ -28,10 +28,10 @@
       <a-box width="75" height="0.1" depth="75" position="0 -0.05 0" static-body visible="false"></a-box>
       <!-- Blocks row 1 -->
       
-      <a-entity mixin="wall" geometry="width: 2" position="0 0.5 -6"></a-entity>
-      <a-entity mixin="wall" geometry="width: 6" position="-1.1 0.5 -3" rotation="0 90 0"></a-entity>
-      <a-entity mixin="wall" geometry="width: 6" position="1.1 0.5 -3" rotation="0 -90 0"></a-entity>
-      <a-entity mixin="wall" geometry="width: 2" position="0 0.5 -0.15"></a-entity>
+      <a-entity mixin="wall" geometry="width: 2" position="0 0 -6"></a-entity>
+      <a-entity mixin="wall" geometry="width: 6" position="-1.1 0 -3" rotation="0 90 0"></a-entity>
+      <a-entity mixin="wall" geometry="width: 6" position="1.1 0 -3" rotation="0 -90 0"></a-entity>
+      <a-entity mixin="wall" geometry="width: 2" position="0 0 -0.15"></a-entity>
     </a-scene>
   </body>
 </html>
