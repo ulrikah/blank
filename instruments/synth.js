@@ -1,7 +1,7 @@
 const Tone = require('tone');
 
-const membraneSynth = new Tone.MembraneSynth();
+const synth = new Tone.Synth();
 const pingPong = new Tone.PingPongDelay("16n", 0.1);
 
-exports.synth = membraneSynth;
+exports.synth = synth;
 exports.pingPong = pingPong;

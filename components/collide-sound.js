@@ -1,7 +1,6 @@
 const Tone = require('tone');
 
-const membrane = require('../instruments/membraneSynth.js');
-const synth = membrane.synth;
+const synth = require('../instruments/synth.js').synth;
 synth.toMaster();
 
 AFRAME.registerComponent('collide-sound', {

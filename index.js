@@ -20,7 +20,7 @@ require('./components/panner-object.js')
 require('./components/tone-transport-toggle.js')
 require('./components/random-material.js')
 require('./components/random-torus-knot.js')
-require('./components/ball-shooter.js')
+require('./components/shooter.js')
 require('./components/collide-sound.js')
 require('./components/synth.js')
 
