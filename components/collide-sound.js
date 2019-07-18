@@ -1,6 +1,8 @@
 const Tone = require('tone');
-const noiseSynth = new Tone.MembraneSynth().toMaster();
-noiseSynth.volume.value = -10;
+
+const membrane = require('../instruments/membraneSynth.js');
+const synth = membrane.synth;
+synth.toMaster();
 
 AFRAME.registerComponent('collide-sound', {
 	
@@ -23,6 +25,6 @@ AFRAME.registerComponent('collide-sound', {
 		vel = THREE.Math.mapLinear(vel, 1, 5, this.minVel, this.maxVel)
 		vel = THREE.Math.clamp(vel, this.minVel, this.maxVel);
 		
-		noiseSynth.triggerAttackRelease(note, "8n", Tone.now(), vel);
+		synth.triggerAttackRelease(note, "8n", Tone.now(), vel);
   },
 });
