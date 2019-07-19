@@ -26,13 +26,15 @@
 					geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5" 
 				></a-entity>
 			</a-entity>
-			<a-entity synth geometry="primitive: sphere; radius: 1" tone-transport-toggle random-material position="0 5 -10"> </a-entity>
+			<a-entity synth class="toggle" geometry="primitive: sphere; radius: 1" tone-transport-toggle random-material position="0 5 -10">
+				<a-text value="play / pause" position="-0.5 2 0" width="5"></a-text>
+			</a-entity>
 			<a-entity animation="property: rotation; to: 360 360 360; dur: 10000; easing: linear; loop: true">
 				<a-entity mixin="light" position="30 0 0"></a-entity>
 			</a-entity>
 			<!-- VR interaction -->
-			<a-entity laser-controls="hand: left;"></a-entity>
-			<a-entity laser-controls="hand: right"></a-entity>
+			<a-entity laser-controls="hand: left" raycaster="objects: .toggle"></a-entity>
+			<a-entity laser-controls="hand: right" raycaster="objects: .toggle"></a-entity>
     </a-scene>
   </body>
 </html>

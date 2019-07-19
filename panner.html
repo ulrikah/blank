@@ -21,6 +21,8 @@
 				</a-mixin>
 			</a-assets>
 
+			<a-log material="color: #FFF" text="color: #111" position="-2 0 -2"></a-log>
+
 			<a-entity animation="property: rotation; to: 0 0 360; dur: 4000; easing: linear; loop: true">
 				<a-entity mixin="light" position="30 0 0"></a-entity>
 			</a-entity>
@@ -28,14 +30,14 @@
 				<a-entity mixin="light" position="0 0 40"></a-entity>
 			</a-entity>
 
-			<a-entity class="toggle" tone-transport-toggle visible="false" random-material geometry="primitive: sphere; radius: 0.5" position="0 0 -1">
+			<a-entity class="toggle" tone-transport-toggle visible="false" random-material geometry="primitive: sphere; radius: 0.5" position="0 1 -1">
 				<a-text value="play / pause" position="-0.5 1 0" width="5"></a-text>
 			</a-entity>
 			<a-entity panner-container id="panner-container">
 			</a-entity>
 			<!-- VR interaction -->
-			<a-entity laser-controls="hand: left;"></a-entity>
-			<a-entity laser-controls="hand: right"></a-entity>
+			<a-entity laser-controls="hand: left" raycaster="objects: .toggle"></a-entity>
+			<a-entity laser-controls="hand: right" raycaster="objects: .toggle"></a-entity>
     </a-scene>
   </body>
 </html>

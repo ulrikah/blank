@@ -18,6 +18,8 @@
         <img id="orangebump" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Forangebump1.jpg?1510639083481" crossorigin="anonymous" /> 
         
         <a-mixin id="wall" class="wall" geometry="primitive: box" collide-sound visible="false" material="color: #fff; wireframe: true; wireframeLinewidth: 10" static-body force-pushable shadow ></a-mixin>
+
+        <a-mixin id="ammo" class="ammo" geometry="primitve: box; width: 0.2; depth: 0.2; height: 0.2" material="roughness: 0.48; color: #edaa45"  dynamic-body="shape: box"shadow="cast: true; receive: true"></a-mixin>
       </a-assets>
       
       <a-camera position="-3 3 5"></a-camera>
@@ -26,7 +28,7 @@
       <a-entity shooter id="gun" sound="src: #sfx-gun; autoplay: false;" obj-model="obj: #gun-obj; mtl: #gun-mtl" position="0 1 -1" shadow rotation="0 90 0"></a-entity>      
       <!-- Physics terrain -->
       
-      <a-box width="75" height="10" depth="75" position="0 -5.005 0" static-body visible="false"></a-box>
+      <a-box width="75" height="10" depth="75" position="0 -4.995 0" static-body visible="false"></a-box>
       
       <!-- Walls -->
       <a-entity mixin="wall" geometry="width: 6; height: 15; depth: 1" position="0 0 -6"></a-entity>

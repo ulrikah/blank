@@ -25,11 +25,8 @@ AFRAME.registerComponent('shooter', {
 
   createAmmo: function () {
   	const ammo = document.createElement('a-entity');
-    ammo.setAttribute('dynamic-body', { shape: 'box'});
-    ammo.setAttribute('geometry', { primitive: 'box', width: 0.2, depth: 0.2, height: 0.2})
+    ammo.setAttribute('mixin', 'ammo')
     ammo.setAttribute('position', this.position);
-    ammo.setAttribute('material', { roughness: 0.48, color: "#edaa45"});
-    ammo.setAttribute('shadow', { cast: true, receive: true })
   	return ammo;
   },
 

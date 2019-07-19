@@ -44,7 +44,6 @@ AFRAME.registerComponent('grab-fork', {
     this.grabbing = false;
     if (!hitEl) { return; }
     hitEl.removeState(this.GRABBED_STATE);
-    hitEl.setAttribute('dynamic-body', '')
     hitEl.emit('grabend');
     this.el.components.haptics.pulse(0.2, 50); // triggers a haptic feedback when grab ends
     this.hitEl = undefined;
@@ -65,7 +64,6 @@ AFRAME.registerComponent('grab-fork', {
     var position;
     if (!hitEl) { return; }
     if (hitEl.is(this.GRABBED_STATE)){
-    	hitEl.removeAttribute('dynamic-body')
     	hitEl.emit('grab')
     }
 
