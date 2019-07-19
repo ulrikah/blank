@@ -4,7 +4,7 @@ AFRAME.registerComponent('shooter', {
 	
   init: function () {
   	this.shoot = this.shoot.bind(this);
-  	window.addEventListener('click', this.shoot)
+  	this.el.addEventListener('click', this.shoot)
   },
 
   update: function() {
@@ -13,7 +13,8 @@ AFRAME.registerComponent('shooter', {
   },
 
   remove: function() {
-  	window.removeEventListener('click', this.shoot);
+  	const el = this.el;
+  	el.removeEventListener('click', this.shoot);
   },
 
   shoot: function () {
@@ -28,12 +29,6 @@ AFRAME.registerComponent('shooter', {
     ammo.setAttribute('mixin', 'ammo')
     ammo.setAttribute('position', this.position);
   	return ammo;
-  },
-
-  randomInt: function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+  }
 
 });
