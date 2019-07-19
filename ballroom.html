@@ -11,11 +11,11 @@
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
   </head>
   <body>
-    <a-scene physics="debug: true; gravity: -9.8; restitution: 0.9" cursor="rayOrigin: mouse">
+    <a-scene physics="debug: true; gravity: -3; restitution: 0.9; angularDamping: 0.2" cursor="rayOrigin: mouse">
       <a-assets>      
-        <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>@
+        <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
 
-        <a-mixin id="wall" class="wall" geometry="primitive: box" collide-sound visible="false" material="color: #fff; wireframe: true; wireframeLinewidth: 10" static-body force-pushable shadow ></a-mixin>
+        <a-mixin id="wall" class="wall" geometry="primitive: box" visible="false" material="color: #fff; wireframe: true; wireframeLinewidth: 10" static-body force-pushable shadow ></a-mixin>
 
         <a-mixin id="touch"
 					physics-collider phase-shift
@@ -26,30 +26,29 @@
 					            colliderEndEvent: collisions;
 					            colliderEndEventProperty: clearedEls;"></a-mixin>
 	      <a-mixin id="ammo" geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
+	      	collide-sound="target: wall"
 					grabbable
 					event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
 					event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
 					dynamic-body shadow></a-mixin>
       </a-assets>
-      
       <a-camera position="0 1.6 -3"></a-camera>
       <a-entity environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
 
-      <!-- entity to create more ammo
-			<a-entity class="shooter" shooter sound="src: #sfx-gun; autoplay: false; volume: 0.6" random-material geometry="primitive: sphere; radius: 0.3" position="0 4 -5">
+      <!-- object spawner for debugging purposes -->
+			<a-entity class="shooter" shooter sound="src: #sfx-gun; autoplay: false; volume: 0.6" random-material geometry="primitive: sphere; radius: 0.3" position="0 2 -5">
 				<a-text value="point at me" position="-0.3 0.5 0" width="3"></a-text>
 				<a-text value="then click me" position="-0.35 -0.5 0" width="3"></a-text>
 			</a-entity>
-			-->
       
       <!-- Physics terrain ground -->
       <a-box width="75" height="10" depth="75" position="0 -4.995 0" static-body visible="false"></a-box>
       
       <!-- Walls -->
-      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 15; depth: 1" position="0 0 -6"></a-entity>
-      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 15; depth: 1" position="-2.5 0 -3" rotation="0 90 0"></a-entity>
-      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 15; depth: 1" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
-      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 15; depth: 1" position="0 0 0"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 50; depth: 1" position="0 0 -6"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 50; depth: 1" position="-2.5 0 -3" rotation="0 90 0"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 50; depth: 1" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 50; depth: 1" position="0 0 0"></a-entity>
 
       <a-entity random-material class="ammo" mixin="ammo" position="0 0.265 -3"></a-entity>
       <a-entity random-material class="ammo" mixin="ammo" position="0 0.265 -3.5"></a-entity>

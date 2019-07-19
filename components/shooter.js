@@ -28,7 +28,6 @@ AFRAME.registerComponent('shooter', {
   	const ammo = document.createElement('a-entity');
     ammo.setAttribute('mixin', 'ammo')
     ammo.setAttribute('class', 'ammo')
-    ammo.setAttribute('grabbable', '')
     ammo.setAttribute('position', this.position);
   	return ammo;
   }
