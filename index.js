@@ -11,7 +11,7 @@ require('aframe-environment-component');
 require('./components/cursor-listener.js')
 require('./components/transport.js')
 require('./components/play-pause.js')
-require('./components/grab.js')
+require('./components/grab-fork.js')
 require('./components/aabb-collider.js')
 require('./components/refresh-page.js')
 require('./components/rotate.js')

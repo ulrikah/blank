@@ -7,7 +7,7 @@
 * Determines if the entity is grabbed or released.
 * Updates its position to move along the controller.
 */
-AFRAME.registerComponent('grab', {
+AFRAME.registerComponent('grab-fork', {
   init: function () {
     this.GRABBED_STATE = 'grabbed';
     // Bind event handlers
