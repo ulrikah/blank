@@ -17,6 +17,19 @@
 
         <a-mixin id="wall" class="wall" geometry="primitive: box" visible="false" material="color: #fff; wireframe: true; wireframeLinewidth: 10" static-body force-pushable shadow ></a-mixin>
 
+        <a-mixin id="polySynth"
+        	geometry="primitive: sphere; radius: 0.3;"
+        	dynamic-body="shape: sphere"
+        	random-material
+      	>
+      	</a-mixin>
+
+        <a-mixin id="monoSynth" 
+	      	geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
+	      	dynamic-body
+      	>
+      	</a-mixin>
+
         <a-mixin id="touch"
 					physics-collider phase-shift
 					collision-filter="collisionForces: false"
@@ -26,12 +39,10 @@
 					            colliderEndEvent: collisions;
 					            colliderEndEventProperty: clearedEls;"></a-mixin>
 	      <a-mixin id="ammo" 
-	      	geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
 					grabbable
-					random-material
 					event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
 					event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
-					dynamic-body shadow></a-mixin>
+					shadow></a-mixin>
       </a-assets>
       <a-camera position="0 1.6 2"></a-camera>
       <a-entity environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
@@ -54,12 +65,8 @@
 	      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 100; depth: 1" position="0 0 0"></a-entity>
     	</a-entity>
 
-      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo" position="0 0.265 -1"></a-entity>
-      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo" position="0 0.265 -1.5"></a-entity>
-      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo" position="-1 0.265 -1"></a-entity>
-      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo" position="-1 0.265 -1.5"></a-entity>
-      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo" position="1 0.265 -1"></a-entity>
-      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo" position="1 0.265 -1.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo; monoSynth" position="0 0.265 -1"></a-entity>
+      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo; polySynth" position="0 0.265 -1.5"></a-entity>
 
 			<!-- VR interaction -->
       <a-entity id="rhand" mixin="touch"
