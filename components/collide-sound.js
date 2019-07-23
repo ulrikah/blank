@@ -25,7 +25,7 @@ AFRAME.registerComponent('collide-sound', {
   init: function () {
   	const el = this.el
   	this.synth = this.chooseInstrument();
-  	this.synth.synth.chain(reverb, delay, filterHigh, distortion, pingPong, Tone.Master);
+  	this.synth.synth.chain(reverb, delay, filterHigh, pingPong, Tone.Master);
 
 		this.collide = this.collide.bind(this)
 		this.isValidTarget = this.isValidTarget.bind(this)

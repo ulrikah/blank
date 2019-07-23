@@ -22,7 +22,8 @@ require('./components/random-material.js')
 require('./components/random-torus-knot.js')
 require('./components/shooter.js')
 require('./components/collide-sound.js')
-require('./components/synth.js')
+require('./components/synth.js') // REMOVE
+require('./components/hide-in-vr.js')
 
 // AFRAME state
 require('./state/state.js')
