@@ -4,6 +4,7 @@ AFRAME.registerComponent('shooter', {
 	
   init: function () {
   	this.shoot = this.shoot.bind(this);
+  	this.maxVel = 10;
   	this.el.addEventListener('click', this.shoot)
   },
 
@@ -19,7 +20,7 @@ AFRAME.registerComponent('shooter', {
 
   shoot: function () {
     const ammo = this.createAmmo()
-    ammo.setAttribute('velocity', [fn.randomInt(-10, 10), fn.randomInt(-10, 10), fn.randomInt(0, 10)].join(" "));
+    ammo.setAttribute('velocity', [fn.randomInt(-this.maxVel, this.maxVel), fn.randomInt(-this.maxVel, this.maxVel), fn.randomInt(0, this.maxVel)].join(" "));
     AFRAME.scenes[0].appendChild(ammo);
     this.el.components.sound.playSound();
   },
@@ -28,7 +29,8 @@ AFRAME.registerComponent('shooter', {
   	const ammo = document.createElement('a-entity');
     ammo.setAttribute('mixin', 'ammo')
     ammo.setAttribute('class', 'ammo')
-    ammo.setAttribute('collide-sound', { source: Math.random() > 0.5 ? "polySynth" : "monoSynth"})
+    // ammo.setAttribute('collide-sound', { source: Math.random() > 0.5 ? "polySynth" : "monoSynth"})
+    ammo.setAttribute('collide-sound', { source: "polySynth" })
     ammo.setAttribute('position', this.position);
   	return ammo;
   }

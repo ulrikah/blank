@@ -1,4 +1,5 @@
 const Tone = require('tone');
+const fn = require('../functions/functions.js')
 
 const monoSynth = new Tone.Synth();
 
@@ -54,9 +55,56 @@ distortion.wet.value = 0.2;
 const reverb = new Tone.Reverb();
 reverb.generate()
 
+// wrapper for triggering a sound on collision
+function BasicSynthWrapper(synth) {
+	this.synth = synth;
+	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, ) => { 
+		this.synth.triggerAttackRelease(note, duration, time, vel)
+	}
+}
+
+function PolySynthWrapper(synth) {
+	this.synth = synth;
+	this.ctrl = new Tone.CtrlPattern(
+		['C2', 'E2', 'G2']
+		, Tone.CtrlPattern.Type.AlternateUp);
+	this.note = this.ctrl.next()
+	this.vel = 0.5;
+	this.duration = '8n';
+
+	this.loop = new Tone.Loop( (time) => {
+		this.synth.triggerAttackRelease(this.note, this.duration, time, this.vel);
+	}, '8n');
+
+	this.loop.start(0)
+	Tone.Transport.start()
+
+	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => { 
+		this.note = this.ctrl.next()
+		this.vel = vel;
+
+		if (Math.random() < 0.1)
+		{
+			this.note = Tone.Frequency(this.note).transpose(fn.randomInt(-3, 3))
+		}
+
+		if (Math.random() < 0.2)
+		{
+			this.synth.triggerAttackRelease(Tone.Frequency(this.note).transpose(12), "8n", time)
+		}
+
+		if (Math.random() > 0.9)
+		{
+			this.synth.triggerAttackRelease(Tone.Frequency(this.note).transpose(24), "8n", time) 
+		}
+
+		height = THREE.Math.clamp(height, 0, 10);
+	}
+}
+
 // oscillators
-exports.monoSynth = monoSynth;
-exports.polySynth = polySynth;
+exports.monoSynth = new BasicSynthWrapper(monoSynth);
+exports.polySynth = new PolySynthWrapper(polySynth);
 
 // fx
 exports.reverb = reverb;
