@@ -1,31 +1,48 @@
 const Tone = require('tone');
+const ballroom = require('../instruments/ballroom.js')
+const fn = require('../functions/functions.js')
 
-const monoSynth = require('../instruments/ballroom.js').monoSynth;
-const polySynth = require('../instruments/ballroom.js').polySynth;
+const monoSynth = ballroom.monoSynth;
+const polySynth = ballroom.polySynth;
+
+const filterHigh = ballroom.filterHigh;
+const phaser = ballroom.phaser;
+const delay = ballroom.delay;
+const pingPong = ballroom.pingPong;
+const distortion = ballroom.distortion;
+const reverb = ballroom.reverb;
+
 
 AFRAME.registerComponent('collide-sound', {
 	schema: {
 		target: { type: 'string', default: 'wall'},
-		source: { type: 'string', default: 'monoSynth'}
+		source: { type: 'string', default: 'polySynth'}
 	},
 
   init: function () {
   	const el = this.el
   	this.synth = this.chooseInstrument();
-  	this.synth.toMaster();
-		this.triggerSound = this.triggerSound.bind(this)
+  	this.synth.chain(pingPong, reverb, delay, filterHigh, distortion, Tone.Master);
+  	this.notes = ['C3', 'E3', 'G3'];
+  	this.vel = 0.5;
+  	this.ctrl = new Tone.CtrlPattern(this.notes, Tone.CtrlPattern.Type.AlternateUp);
+
+		this.collide = this.collide.bind(this)
 		this.isValidTarget = this.isValidTarget.bind(this)
 
-		el.addEventListener('collide', this.triggerSound);
+		el.addEventListener('collide', this.collide);
   },
 
-  triggerSound: function(e) {
+  collide: function(e) {
   	if (this.isValidTarget(e.detail.body.el.classList))
 		{
 			let vel = e.detail.target.velocity.length() // euc length from origo
 			vel = THREE.Math.mapLinear(vel, 1, 5, 0, 1)
 			vel = THREE.Math.clamp(vel, 0, 1);
-			this.synth.triggerAttackRelease("C2", "8n", Tone.now(), vel);
+			this.vel = vel;
+
+			const note = this.ctrl.next()
+  		this.synth.triggerAttackRelease(note, "8n", Tone.now(), this.vel);
 		}
   },
 
@@ -43,7 +60,7 @@ AFRAME.registerComponent('collide-sound', {
 		  	return monoSynth;
 		    break;
 		  default:
-		    return monoSynth;
+		    return polySynth;
 		}
   }
 });

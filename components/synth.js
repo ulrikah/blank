@@ -1,4 +1,5 @@
 const Tone = require('tone')
+const fn = require('../functions/functions.js')
 
 AFRAME.registerComponent('synth', {
   init: function () {
@@ -61,7 +62,7 @@ AFRAME.registerComponent('synth', {
 
 			if (Math.random() < 0.1)
 			{
-				note = Tone.Frequency(note).transpose(randomInt(-3, 3))
+				note = Tone.Frequency(note).transpose(fn.randomInt(-3, 3))
 			}
 
 			else {
@@ -82,17 +83,6 @@ AFRAME.registerComponent('synth', {
 
 		loop.start(0)
 
-		Tone.Master.volume.value = 0;
 		Tone.Transport.bpm = 130
-	},
-
-	update: function () {
-		Tone.Transport.state
 	}
 });
-
-function randomInt(min, max) {
-	min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}

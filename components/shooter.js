@@ -1,4 +1,4 @@
-const fn = require('../functions.js');
+const fn = require('../functions/functions.js')
 
 AFRAME.registerComponent('shooter', {
 	
