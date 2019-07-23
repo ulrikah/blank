@@ -29,7 +29,7 @@ polySynth.volume.value = -12;
 
 const filterHigh = new Tone.Filter({
 	type  : "highpass" ,
-	frequency  : 20 ,
+	frequency  : 200 ,
 	rolloff  : -12 ,
 	Q  : 1 ,
 	gain  : 0
@@ -65,46 +65,48 @@ function BasicSynthWrapper(synth) {
 
 function PolySynthWrapper(synth) {
 	this.synth = synth;
-	this.ctrl = new Tone.CtrlPattern(
-		['C2', 'E2', 'G2']
-		, Tone.CtrlPattern.Type.AlternateUp);
-	this.note = this.ctrl.next()
 	this.vel = 0.5;
 	this.duration = '8n';
 
+	this.chain = new Tone.CtrlMarkov({
+		"beginning" : 
+			[	{"value" : "middle", "probability" : 0.6}, 
+				{"value" : "end", "probability" : 0.4}],
+		"middle" : "end",
+		"end" : ["end", "beginning"]
+	});
+	this.chain.value = "beginning"
+	this.parts = 
+	{ "beginning": ['C3', 'E3', 'G3'],
+		"middle": ['D3', 'F3', 'A3'],
+		"end": ['B3', 'D4', 'F4']
+	}
+	this.ctrl = new Tone.CtrlPattern(
+		this.parts["beginning"],
+		Tone.CtrlPattern.Type.AlternateUp);
+
 	this.loop = new Tone.Loop( (time) => {
-		this.synth.triggerAttackRelease(this.note, this.duration, time, this.vel);
+		const note = this.ctrl.next()
+		this.synth.triggerAttackRelease(note, this.duration, time, this.vel);
 	}, '8n');
 
 	this.loop.start(0)
 	Tone.Transport.start()
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => { 
-		this.note = this.ctrl.next()
 		this.vel = vel;
+		this.ctrl.values = this.parts[this.chain.next()];
 
-		if (Math.random() < 0.1)
-		{
-			this.note = Tone.Frequency(this.note).transpose(fn.randomInt(-3, 3))
-		}
-
-		if (Math.random() < 0.2)
-		{
-			this.synth.triggerAttackRelease(Tone.Frequency(this.note).transpose(12), "8n", time)
-		}
-
-		if (Math.random() > 0.9)
-		{
-			this.synth.triggerAttackRelease(Tone.Frequency(this.note).transpose(24), "8n", time) 
-		}
-
-		height = THREE.Math.clamp(height, 0, 10);
+		// height = THREE.Math.clamp(height, 0, 10); // use height for some filter stuff ?
 	}
 }
 
 // oscillators
-exports.monoSynth = new BasicSynthWrapper(monoSynth);
-exports.polySynth = new PolySynthWrapper(polySynth);
+exports.monoSynth = monoSynth;
+exports.polySynth = polySynth;
+
+exports.PolySynthWrapper = PolySynthWrapper;
+exports.BasicSynthWrapper = BasicSynthWrapper;
 
 // fx
 exports.reverb = reverb;

@@ -5,6 +5,10 @@ const fn = require('../functions/functions.js')
 const monoSynth = ballroom.monoSynth;
 const polySynth = ballroom.polySynth;
 
+// wrappers around the synth objects
+const PolySynthWrapper = ballroom.PolySynthWrapper;
+const BasicSynthWrapper = ballroom.BasicSynthWrapper;
+
 const filterHigh = ballroom.filterHigh;
 const phaser = ballroom.phaser;
 const delay = ballroom.delay;
@@ -50,13 +54,13 @@ AFRAME.registerComponent('collide-sound', {
   chooseInstrument: function() {
   	switch(this.data.source) {
 		  case "polySynth":
-		    return polySynth;
+		    return new PolySynthWrapper(polySynth);
 		    break;
 		  case "monoSynth":
-		  	return monoSynth;
+		  	return new BasicSynthWrapper(monoSynth);
 		    break;
 		  default:
-		    return polySynth;
+		    return new PolySynthWrapper(polySynth);
 		}
   }
 });
