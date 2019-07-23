@@ -27,8 +27,8 @@
 					            colliderEndEventProperty: clearedEls;"></a-mixin>
 	      <a-mixin id="ammo" 
 	      	geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
-	      	collide-sound="target: wall"
 					grabbable
+					random-material
 					event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
 					event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
 					dynamic-body shadow></a-mixin>
@@ -46,17 +46,17 @@
       <a-box width="75" height="10" depth="75" position="0 -4.995 0" static-body visible="false"></a-box>
       
       <!-- Walls -->
-      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 50; depth: 1" position="0 0 -6"></a-entity>
-      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 50; depth: 1" position="-2.5 0 -3" rotation="0 90 0"></a-entity>
-      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 50; depth: 1" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
-      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 50; depth: 1" position="0 0 0"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 100; depth: 1" position="0 0 -6"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 100; depth: 1" position="-2.5 0 -3" rotation="0 90 0"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 7; height: 100; depth: 1" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
+      <a-entity mixin="wall" class="wall" geometry="width: 6; height: 100; depth: 1" position="0 0 0"></a-entity>
 
-      <a-entity random-material class="ammo" mixin="ammo" position="0 0.265 -3"></a-entity>
-      <a-entity random-material class="ammo" mixin="ammo" position="0 0.265 -3.5"></a-entity>
-      <a-entity random-material class="ammo" mixin="ammo" position="-1 0.265 -3"></a-entity>
-      <a-entity random-material class="ammo" mixin="ammo" position="-1 0.265 -3.5"></a-entity>
-      <a-entity random-material class="ammo" mixin="ammo" position="1 0.265 -3"></a-entity>
-      <a-entity random-material class="ammo" mixin="ammo" position="1 0.265 -3.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo" position="0 0.265 -3"></a-entity>
+      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo" position="0 0.265 -3.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo" position="-1 0.265 -3"></a-entity>
+      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo" position="-1 0.265 -3.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo" position="1 0.265 -3"></a-entity>
+      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo" position="1 0.265 -3.5"></a-entity>
 
 			<!-- VR interaction -->
       <a-entity id="rhand" mixin="touch"
