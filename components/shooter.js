@@ -28,7 +28,7 @@ AFRAME.registerComponent('shooter', {
   createAmmo: function () {
   	const ammo = document.createElement('a-entity');
     ammo.setAttribute('class', 'ammo')
-    const synthType = Math.random() > 0.5 ? "polySynth" : "monoSynth"
+    const synthType = Math.random() > 0.3 ? "polySynth" : Math.random() > 0.5 ? "monoSynth" : "sampler"
     ammo.setAttribute('collide-sound', { source: synthType })
     ammo.setAttribute('mixin', 'ammo; ' + synthType)
 
