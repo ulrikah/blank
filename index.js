@@ -27,3 +27,7 @@ require('./components/hide-in-vr.js')
 
 // AFRAME state
 require('./state/state.js')
+
+// shaders
+require('./shaders/grid-glitch.js')
+require('./shaders/noise.js')

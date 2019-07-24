@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
   </head>
   <body>
-    <a-scene physics="debug: true; gravity: -2; restitution: 0.99; angularDamping: 0.2" cursor="rayOrigin: mouse">
+    <a-scene physics="debug: false; gravity: -2; restitution: 0.99; angularDamping: 0.2" cursor="rayOrigin: mouse">
       <a-assets>      
         <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
 
@@ -20,13 +20,14 @@
         <a-mixin id="polySynth"
         	geometry="primitive: sphere; radius: 0.3;"
         	dynamic-body="shape: sphere"
-        	random-material
+        	material="shader: noise"
       	>
       	</a-mixin>
 
         <a-mixin id="monoSynth" 
 	      	geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
 	      	dynamic-body
+	      	material="shader: grid-glitch"
       	>
       	</a-mixin>
 
@@ -67,6 +68,7 @@
 
       <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo monoSynth" position="0 0.265 -1"></a-entity>
       <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo polySynth" position="0 0.265 -1.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: sampler" class="ammo" mixin="ammo sampler" position="0 0.265 -1.5"></a-entity>
 
 			<!-- VR interaction -->
       <a-entity id="rhand" mixin="touch"
