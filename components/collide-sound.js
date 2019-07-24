@@ -4,10 +4,12 @@ const fn = require('../functions/functions.js')
 
 const monoSynth = ballroom.monoSynth;
 const polySynth = ballroom.polySynth;
+const grainPlayer = ballroom.grainPlayer;
 
 // wrappers around the synth objects
 const PolySynthWrapper = ballroom.PolySynthWrapper;
 const BasicSynthWrapper = ballroom.BasicSynthWrapper;
+const GrainPlayerWrapper = ballroom.GrainPlayerWrapper;
 
 const filterHigh = ballroom.filterHigh;
 const phaser = ballroom.phaser;
@@ -15,6 +17,7 @@ const delay = ballroom.delay;
 const pingPong = ballroom.pingPong;
 const distortion = ballroom.distortion;
 const reverb = ballroom.reverb;
+const tremolo = ballroom.tremolo;
 
 AFRAME.registerComponent('collide-sound', {
 	schema: {
@@ -25,7 +28,16 @@ AFRAME.registerComponent('collide-sound', {
   init: function () {
   	const el = this.el
   	this.synth = this.chooseInstrument();
-  	this.synth.synth.chain(reverb, delay, filterHigh, pingPong, Tone.Master);
+
+  	// VERY hacky way to differ GrainPlayer from the Synths
+  	if (this.synth.addFx)
+  	{
+  		this.synth.synth.chain(reverb, delay, filterHigh, pingPong, Tone.Master)
+  	}
+
+  	else {
+  		this.synth.synth.chain(this.synth.tremolo, Tone.Master)
+  	}
 
 		this.collide = this.collide.bind(this)
 		this.isValidTarget = this.isValidTarget.bind(this)
@@ -54,13 +66,15 @@ AFRAME.registerComponent('collide-sound', {
   chooseInstrument: function() {
   	switch(this.data.source) {
 		  case "polySynth":
-		    return new PolySynthWrapper(polySynth);
+		    return new PolySynthWrapper(polySynth, true);
 		    break;
 		  case "monoSynth":
-		  	return new BasicSynthWrapper(monoSynth);
+		  	return new BasicSynthWrapper(monoSynth, true);
 		    break;
+	    case "grainPlayer":
+	    	return new GrainPlayerWrapper(grainPlayer, tremolo, false);
 		  default:
-		    return new PolySynthWrapper(polySynth);
+		    return new GrainPlayerWrapper(grainPlayer, tremolo, false);;
 		}
   }
 });

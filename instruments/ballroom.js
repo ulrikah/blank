@@ -6,6 +6,7 @@ const monoSynth = new Tone.Synth();
 const polySynth = new Tone.PolySynth(4, Tone.Synth);
 polySynth.set('detune', -20)
 
+
 polySynth.set( { 
 	"oscillator" : {
 		"type" : "fattriangle",
@@ -26,6 +27,14 @@ polySynth.set( {
 })
 
 polySynth.volume.value = -12;
+
+const grainPlayer = new Tone.GrainPlayer({
+	"url" : "../assets/ballroom/dark1.wav",
+	"loop" : true,
+	"grainSize": 0.2,
+})
+
+const tremolo = new Tone.Tremolo(4, 0.75);
 
 const filterHigh = new Tone.Filter({
 	type  : "highpass" ,
@@ -55,18 +64,38 @@ distortion.wet.value = 0.2;
 const reverb = new Tone.Reverb();
 reverb.generate()
 
+
+
 // wrapper for triggering a sound on collision
-function BasicSynthWrapper(synth) {
+function BasicSynthWrapper(synth, addFx = false) {
 	this.synth = synth;
-	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, ) => { 
+	this.addFx = addFx;
+	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5 ) => { 
 		this.synth.triggerAttackRelease(note, duration, time, vel)
 	}
 }
 
-function PolySynthWrapper(synth) {
+function GrainPlayerWrapper(grainPlayer, tremolo, addFx = false) {
+	this.synth = grainPlayer;
+	this.tremolo = tremolo;
+	this.addFx = addFx;
+
+	this.synth.volume.value = -6
+	this.tremolo.start()
+	Tone.Transport.start();
+
+	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5 ) => {
+		this.synth.start()
+		this.tremolo.frequency.value = 15;
+		this.tremolo.frequency.linearRampTo(4);
+	}
+}
+
+function PolySynthWrapper(synth, addFx = false) {
 	this.synth = synth;
 	this.vel = 0.5;
 	this.duration = '8n';
+	this.addFx = addFx;
 
 	this.chain = new Tone.CtrlMarkov({
 		"beginning" : 
@@ -105,9 +134,11 @@ function PolySynthWrapper(synth) {
 // oscillators
 exports.monoSynth = monoSynth;
 exports.polySynth = polySynth;
+exports.grainPlayer = grainPlayer;
 
 exports.PolySynthWrapper = PolySynthWrapper;
 exports.BasicSynthWrapper = BasicSynthWrapper;
+exports.GrainPlayerWrapper = GrainPlayerWrapper;
 
 // fx
 exports.reverb = reverb;
@@ -116,3 +147,4 @@ exports.phaser = phaser;
 exports.delay = delay;
 exports.pingPong = pingPong;
 exports.distortion = distortion;
+exports.tremolo = tremolo;

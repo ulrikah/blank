@@ -24,7 +24,7 @@
       	>
       	</a-mixin>
 
-      	<a-mixin id="sampler"
+      	<a-mixin id="grainPlayer"
       		geometry="primitive: sphere; radius: 0.2"
       		dynamic-body="shape: sphere"
       		material="color: pink; metalness: 0.9"
@@ -75,7 +75,7 @@
 
       <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo monoSynth" position="0 0.265 -1"></a-entity>
       <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo polySynth" position="0 0.265 -1.5"></a-entity>
-      <a-entity collide-sound="target: wall; source: sampler" class="ammo" mixin="ammo sampler" position="0 0.265 -1.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: grainPlayer" class="ammo" mixin="ammo grainPlayer" position="0 0.265 -1.5"></a-entity>
 
 			<!-- VR interaction -->
       <a-entity id="rhand" mixin="touch"
