@@ -4,7 +4,7 @@ const fn = require('../functions/functions.js')
 const monoSynth = new Tone.Synth();
 
 const polySynth = new Tone.PolySynth(4, Tone.Synth);
-polySynth.set('detune', -20)
+polySynth.set('detune', -200)
 
 
 polySynth.set( { 
@@ -26,15 +26,13 @@ polySynth.set( {
 	}
 })
 
-polySynth.volume.value = -12;
-
 const grainPlayer = new Tone.GrainPlayer({
 	"url" : "../assets/ballroom/dark1.wav",
 	"loop" : true,
 	"grainSize": 0.2,
 })
 
-const tremolo = new Tone.Tremolo(4, 0.75);
+const tremolo = new Tone.Tremolo(15, 0.75);
 
 const filterHigh = new Tone.Filter({
 	type  : "highpass" ,
@@ -44,11 +42,13 @@ const filterHigh = new Tone.Filter({
 	gain  : 0
 });
 
-const phaser = new Tone.Phaser({
-	"frequency" : 2,
-	"octaves" : 2,
-	"baseFrequency" : 200
-});
+const filterLow = new Tone.LowpassCombFilter();
+
+var phaser = new Tone.Phaser({
+	"frequency" : 15,
+	"octaves" : 5,
+	"baseFrequency" : 1000
+})
 
 const delay = new Tone.PingPongDelay({
 	"delayTime" : "8n",
@@ -64,30 +64,38 @@ distortion.wet.value = 0.2;
 const reverb = new Tone.Reverb();
 reverb.generate()
 
-
+const feedbackDelay = new Tone.FeedbackDelay("8n", 0.5);
+const bitCrusher = new Tone.BitCrusher();
 
 // wrapper for triggering a sound on collision
 function BasicSynthWrapper(synth, addFx = false) {
 	this.synth = synth;
 	this.addFx = addFx;
-	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5 ) => { 
+	this.collide = (note = "C1", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => { 
 		this.synth.triggerAttackRelease(note, duration, time, vel)
 	}
 }
 
-function GrainPlayerWrapper(grainPlayer, tremolo, addFx = false) {
+function GrainPlayerWrapper(grainPlayer, addFx = false) {
 	this.synth = grainPlayer;
-	this.tremolo = tremolo;
 	this.addFx = addFx;
 
-	this.synth.volume.value = -6
-	this.tremolo.start()
+	this.synth.volume.value = -18
+	this.synth.detune = 300
 	Tone.Transport.start();
 
-	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5 ) => {
+	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => {
 		this.synth.start()
-		this.tremolo.frequency.value = 15;
-		this.tremolo.frequency.linearRampTo(4);
+		this.synth.volume.value = fn.map(vel, 0.3, 1, -32, -18);
+		if (this.synth.detune > 400){
+			this.synth.detune += Math.random()*-100;
+		}
+		else if (this.synth.detune < -400){
+			this.synth.detune += Math.random()*100;	
+		}
+		else {
+			this.synth.detune += Math.random()*(Math.random() > 0.5 ? 100 : -100)
+		}
 	}
 }
 
@@ -96,6 +104,8 @@ function PolySynthWrapper(synth, addFx = false) {
 	this.vel = 0.5;
 	this.duration = '8n';
 	this.addFx = addFx;
+
+	this.synth.volume.value = -12;
 
 	this.chain = new Tone.CtrlMarkov({
 		"beginning" : 
@@ -143,8 +153,11 @@ exports.GrainPlayerWrapper = GrainPlayerWrapper;
 // fx
 exports.reverb = reverb;
 exports.filterHigh = filterHigh;
+exports.filterLow = filterLow;
 exports.phaser = phaser;
 exports.delay = delay;
 exports.pingPong = pingPong;
 exports.distortion = distortion;
 exports.tremolo = tremolo;
+exports.feedbackDelay = feedbackDelay;
+exports.bitCrusher = bitCrusher;

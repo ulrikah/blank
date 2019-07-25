@@ -12,12 +12,15 @@ const BasicSynthWrapper = ballroom.BasicSynthWrapper;
 const GrainPlayerWrapper = ballroom.GrainPlayerWrapper;
 
 const filterHigh = ballroom.filterHigh;
+const filterLow = ballroom.filterLow;
 const phaser = ballroom.phaser;
 const delay = ballroom.delay;
 const pingPong = ballroom.pingPong;
 const distortion = ballroom.distortion;
 const reverb = ballroom.reverb;
 const tremolo = ballroom.tremolo;
+const feedbackDelay = ballroom.feedbackDelay;
+const bitCrusher = ballroom.bitCrusher;
 
 AFRAME.registerComponent('collide-sound', {
 	schema: {
@@ -31,12 +34,12 @@ AFRAME.registerComponent('collide-sound', {
 
   	// VERY hacky way to differ GrainPlayer from the Synths
   	if (this.synth.addFx)
-  	{
+  	{	
   		this.synth.synth.chain(reverb, delay, filterHigh, pingPong, Tone.Master)
   	}
 
   	else {
-  		this.synth.synth.chain(this.synth.tremolo, Tone.Master)
+  		this.synth.synth.chain(filterHigh, phaser, pingPong, Tone.Master)
   	}
 
 		this.collide = this.collide.bind(this)
@@ -72,9 +75,9 @@ AFRAME.registerComponent('collide-sound', {
 		  	return new BasicSynthWrapper(monoSynth, true);
 		    break;
 	    case "grainPlayer":
-	    	return new GrainPlayerWrapper(grainPlayer, tremolo, false);
+	    	return new GrainPlayerWrapper(grainPlayer, false);
 		  default:
-		    return new GrainPlayerWrapper(grainPlayer, tremolo, false);;
+		    return new BasicSynthWrapper(monoSynth, false);
 		}
   }
 });
