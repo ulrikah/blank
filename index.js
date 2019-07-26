@@ -24,6 +24,7 @@ require('./components/shooter.js')
 require('./components/collide-sound.js')
 require('./components/synth.js') // REMOVE
 require('./components/hide-in-vr.js')
+require('./components/splash.js')
 
 // AFRAME state
 require('./state/state.js')
