@@ -16,7 +16,7 @@ AFRAME.registerState({
     	{ note: 'F4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
     	{ note: 'E4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
     ],
-    bpm: 130
+    bpm: 110
   },
  
   handlers: {

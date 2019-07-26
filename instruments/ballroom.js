@@ -123,16 +123,17 @@ function PolySynthWrapper(synth, addFx = false) {
 		this.parts["beginning"],
 		Tone.CtrlPattern.Type.AlternateDown);
 
-	this.loop = new Tone.Loop( (time) => {
+	console.log(Tone.Transport.bpm.value)
+
+	Tone.Transport.scheduleRepeat( (time) => {
 		const note = this.ctrl.next()
 		this.synth.triggerAttackRelease(note, this.duration, time, this.vel);
 	}, '8n');
-	this.loop.humanize = true;
+
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => { 
 		this.vel = vel;
 		this.ctrl.values = this.parts[this.chain.next()];
-		this.loop.start(0)
 
 		// height = THREE.Math.clamp(height, 0, 10); // use height for some filter stuff ?
 	}
