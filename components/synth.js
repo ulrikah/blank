@@ -58,7 +58,7 @@ AFRAME.registerComponent('synth', {
 		ctrl = new Tone.CtrlPattern(notes, Tone.CtrlPattern.Type.AlternateUp)
 
 		let note = ctrl.next();
-		var loop = new Tone.Loop(function(time){
+		var loop = new Tone.Transport.scheduleRepeat(function(time){
 
 			if (Math.random() < 0.1)
 			{
@@ -83,6 +83,5 @@ AFRAME.registerComponent('synth', {
 
 		loop.start(0)
 
-		Tone.Transport.bpm = 130
 	}
 });

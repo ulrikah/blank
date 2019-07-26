@@ -1,40 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title> Drrrum machine </title>
+    <title> What is this? </title>
     <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
     <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
     <script type="text/javascript" src="bundle.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js"></script>
   </head>
   <body>
-    <a-scene cursor="rayOrigin: mouse">
-    	<a-assets>
+    <a-scene physics="debug: false; gravity: -2; restitution: 0.99; angularDamping: 0.2" cursor="rayOrigin: mouse">
+      <a-assets>      
+        <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
+
         <a-mixin id="step"
 					geometry="primitive: dodecahedron"
        	>
        	</a-mixin>
+        <a-mixin id="wall" class="wall" geometry="primitive: box" static-body force-pushable shadow ></a-mixin>
+
+        <a-mixin id="polySynth"
+        	geometry="primitive: sphere; radius: 0.3;"
+        	dynamic-body="shape: sphere"
+        	material="shader: noise"
+      	>
+      	</a-mixin>
+
+      	<a-mixin id="grainPlayer"
+      		geometry="primitive: sphere; radius: 0.2"
+      		dynamic-body="shape: sphere"
+      		material="color: pink; metalness: 0.9"
+    		>
+    		</a-mixin>
+
+        <a-mixin id="monoSynth" 
+	      	geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
+	      	dynamic-body
+	      	material="shader: grid-glitch"
+      	>
+      	</a-mixin>
+
+        <a-mixin id="touch"
+					physics-collider phase-shift
+					collision-filter="collisionForces: false"
+					static-body="shape: sphere; sphereRadius: 0.02"
+					super-hands="colliderEvent: collisions;
+					            colliderEventProperty: els;
+					            colliderEndEvent: collisions;
+					            colliderEndEventProperty: clearedEls;"></a-mixin>
+	      <a-mixin id="ammo" 
+					grabbable
+					event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+					event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+					shadow></a-mixin>
       </a-assets>
+      
+      <a-entity id="cameraRig" position="0 0 2" rotation="0 180 0">
+      	<a-camera look-controls wasd-controls></a-camera>
+      </a-entity>
+      <a-entity 
+      	environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7">
+      </a-entity>
 
-      <a-entity environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
-    	<a-camera wasd-controls look-controls 
-    		position="-1 1.5 3.5"
-  		>	
-    	</a-camera>
-    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
-    	<a-entity 
-    		id="transport"
-    		bind__transport="bpm: bpm; layer: layer; layers: layers"
-  		>
-    		<!-- steps are injected dynamically inside this entity -->
-  		</a-entity>
+      
+			<!-- Sequencer -->
+			<a-entity id="sequencerWrapper" position="0 0 3.5" rotation="0 210 0">
+	    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
+	    	<a-entity id="transport"
+	    		bind__transport="bpm: bpm; layer: layer; layers: layers"
+	  		>
+	    		<!-- steps are injected dynamically inside this entity -->
+	  		</a-entity>
+  		</a-entity>		
+      
+			<!-- object spawner (for debugging purposes) -->
+			<a-entity hide-in-vr visible="true" class="shooter" shooter sound="src: #sfx-gun; autoplay: false; volume: 0.6" random-material geometry="primitive: sphere; radius: 0.3" position="0 4 -3">
+				<a-text value="point at me" position="-0.3 0.5 0" width="3"></a-text>
+				<a-text value="then click me" position="-0.35 -0.5 0" width="3"></a-text>
+			</a-entity>
 
-			<a-sky color="#A0ABFF"></a-sky>
-			<!-- <a-box color="blue" width="0.1" rotation="0 45 0" 
-			position="-1 2 1" refresh-page> </a-box> -->
-			<!-- <a-text id="debug-text" value="Hello, World!" position="0 2 0"></a-text> -->
-			<a-entity vive-controls="hand: left" aabb-collider="objects: .step;" grab-fork haptics></a-entity>
-			<a-entity vive-controls="hand: right" aabb-collider="objects: .step;" grab-fork haptics></a-entity>
+      <!-- Physics terrain ground -->
+      <a-box width="75" height="10" depth="75" position="0 -4.995 0" static-body visible="false"></a-box>
+      
+      <!-- Walls -->
+      <a-entity position="0 0 2">
+      	<!-- invisible borders -->
+	      <a-entity splash mixin="wall" class="wall" visible="false" geometry="width: 6; height: 100; depth: 0.3" position="0 0 -6"></a-entity>
+	      <a-entity splash mixin="wall" class="wall" visible="false" geometry="width: 7; height: 100; depth: 0.3" position="-2.5 0 -3" rotation="0 90 0"></a-entity>
+	      <a-entity splash mixin="wall" class="wall" visible="false" geometry="width: 7; height: 100; depth: 0.3" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
+	      <a-entity splash mixin="wall" class="wall" visible="false" geometry="width: 6; height: 100; depth: 0.3" position="0 0 0"></a-entity>
+
+	      <!-- visual indicators of the border -->
+	      <a-entity mixin="wall" material="color: #EF2D5E" class="wall" geometry="width: 6; height: 0.1; depth: 0.3" position="0 0 -6"></a-entity>
+	      <a-entity mixin="wall" material="color: #EF2D5E" class="wall" geometry="width: 7; height: 0.1; depth: 0.3" position="-2.5 0 -3" rotation="0 90 0"></a-entity>
+	      <a-entity mixin="wall" material="color: #EF2D5E" class="wall" geometry="width: 7; height: 0.1; depth: 0.3" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
+	      <a-entity mixin="wall" material="color: #EF2D5E" class="wall" geometry="width: 6; height: 0.1; depth: 0.3" position="0 0 0"></a-entity>
+    	</a-entity>
+
+      <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo monoSynth" position="0 0 -1"></a-entity>
+      <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo polySynth" position="0 0 -1.5"></a-entity>
+      <a-entity collide-sound="target: wall; source: grainPlayer" class="ammo" mixin="ammo grainPlayer" position="1 0 -2.5"></a-entity>
+
+			<!-- VR interaction -->
+      <a-entity id="rhand" mixin="touch"
+                vive-controls="hand: right"
+                oculus-touch-controls="hand: right"
+                windows-motion-controls="hand: right"
+                aabb-collider="objects: .step;" 
+                grab-fork
+                haptics
+      >
+
+      </a-entity>
+      <a-entity id="lhand" mixin="touch"
+                vive-controls="hand: left"
+                oculus-touch-controls="hand: left"
+                windows-motion-controls="hand: left"
+                aabb-collider="objects: .step;" 
+                grab-fork
+                haptics
+      >
+      </a-entity>
     </a-scene>
   </body>
 </html>

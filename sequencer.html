@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Drrrum machine </title>
+    <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
+    <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
+    <script type="text/javascript" src="bundle.js"></script>
+  </head>
+  <body>
+    <a-scene cursor="rayOrigin: mouse">
+    	<a-assets>
+        <a-mixin id="step"
+					geometry="primitive: dodecahedron"
+       	>
+       	</a-mixin>
+      </a-assets>
+
+      <a-entity environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
+    	<a-camera wasd-controls look-controls 
+    		position="-1 1.5 3.5"
+  		>	
+    	</a-camera>
+    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
+    	<a-entity 
+    		id="transport"
+    		bind__transport="bpm: bpm; layer: layer; layers: layers"
+  		>
+    		<!-- steps are injected dynamically inside this entity -->
+  		</a-entity>
+
+			<a-sky color="#A0ABFF"></a-sky>
+			<!-- <a-box color="blue" width="0.1" rotation="0 45 0" 
+			position="-1 2 1" refresh-page> </a-box> -->
+			<!-- <a-text id="debug-text" value="Hello, World!" position="0 2 0"></a-text> -->
+			<a-entity vive-controls="hand: left" aabb-collider="objects: .step;" grab-fork haptics></a-entity>
+			<a-entity vive-controls="hand: right" aabb-collider="objects: .step;" grab-fork haptics></a-entity>
+    </a-scene>
+  </body>
+</html>
