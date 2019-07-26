@@ -58,7 +58,9 @@
 					shadow></a-mixin>
       </a-assets>
       
-      <a-camera position="0 1.6 2"></a-camera>
+      <a-entity id="cameraRig" position="0 0 2" rotation="0 180 0">
+      	<a-camera look-controls wasd-controls></a-camera>
+      </a-entity>
       <a-entity 
       	environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7">
       </a-entity>
