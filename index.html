@@ -58,7 +58,7 @@
 					shadow></a-mixin>
       </a-assets>
       
-      <a-entity id="cameraRig" position="0 0 2" rotation="0 180 0">
+      <a-entity id="cameraRig" position="0 0 0" rotation="0 0 0">
       	<a-camera look-controls wasd-controls></a-camera>
       </a-entity>
       <a-entity 
@@ -67,7 +67,7 @@
 
       
 			<!-- Sequencer -->
-			<a-entity id="sequencerWrapper" position="0 0 3.5" rotation="0 210 0">
+			<a-entity id="sequencerWrapper" position="0 0 -2" rotation="0 30 0">
 	    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
 	    	<a-entity id="transport"
 	    		bind__transport="bpm: bpm; layer: layer; layers: layers"

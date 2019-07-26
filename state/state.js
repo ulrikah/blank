@@ -1,7 +1,7 @@
 // singleton state component
 
 const randomArray = (length, max, min = 0) => 
-  Array(length).fill().map(() => parseFloat((Math.random() * max).toFixed(2)))
+  Array(length).fill().map(() => parseFloat((Math.random() * (max - min) + min).toFixed(2)))
 
 const randomBoolArray = (length) => 
 	Array(length).fill().map(() => Math.random() >= 0.5)
@@ -9,12 +9,12 @@ const randomBoolArray = (length) =>
 AFRAME.registerState({
   initialState: {
     layers: [
-    	{ note: 'C3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
-    	{ note: 'D3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
-    	{ note: 'E3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
-    	{ note: 'C4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
-    	{ note: 'F4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
-    	{ note: 'E4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5)},
+    	{ note: 'C3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'D3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'E3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'C4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'F4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'E4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
     ],
     bpm: 110
   },

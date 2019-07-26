@@ -80,12 +80,13 @@ function GrainPlayerWrapper(grainPlayer, addFx = false) {
 	this.synth = grainPlayer;
 	this.addFx = addFx;
 
-	this.synth.volume.value = -18
+	this.volMax = -24
+	this.synth.volume.value = this.volMax;
 	this.synth.detune = 300
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => {
 		this.synth.start()
-		this.synth.volume.value = fn.map(vel, 0.3, 1, -32, -18);
+		this.synth.volume.value = fn.map(vel, 0.3, 1, -32, this.volMax);
 		if (this.synth.detune > 400){
 			this.synth.detune += Math.random()*-100;
 		}
@@ -101,10 +102,10 @@ function GrainPlayerWrapper(grainPlayer, addFx = false) {
 function PolySynthWrapper(synth, addFx = false) {
 	this.synth = synth;
 	this.vel = 0.5;
-	this.duration = '8n';
+	this.duration = '16n';
 	this.addFx = addFx;
 
-	this.synth.volume.value = -12;
+	this.synth.volume.value = -18;
 
 	this.chain = new Tone.CtrlMarkov({
 		"beginning" : 
@@ -115,21 +116,18 @@ function PolySynthWrapper(synth, addFx = false) {
 	});
 	this.chain.value = "beginning"
 	this.parts = 
-	{ "beginning": ['C3', 'E3', 'G3'],
-		"middle": ['D3', 'F3', 'A3'],
-		"end": ['B3', 'D4', 'F4']
+	{ "beginning": ['C2', 'E2', 'G2', 'B2'],
+		"middle": ['D2', 'F2', 'A2', 'C3'],
+		"end": ['B2', 'D3', 'F3', 'A3']
 	}
 	this.ctrl = new Tone.CtrlPattern(
 		this.parts["beginning"],
-		Tone.CtrlPattern.Type.AlternateDown);
-
-	console.log(Tone.Transport.bpm.value)
+		Tone.CtrlPattern.Type.AlternateUp);
 
 	Tone.Transport.scheduleRepeat( (time) => {
 		const note = this.ctrl.next()
 		this.synth.triggerAttackRelease(note, this.duration, time, this.vel);
 	}, '8n');
-
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => { 
 		this.vel = vel;
