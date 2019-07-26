@@ -22,21 +22,21 @@
        	</a-mixin>
         <a-mixin id="wall" class="wall" geometry="primitive: box" static-body force-pushable shadow ></a-mixin>
 
-        <a-mixin id="polySynth"
+        <a-mixin id="grainPlayer"
         	geometry="primitive: sphere; radius: 0.3;"
         	dynamic-body="shape: sphere"
         	material="shader: noise"
       	>
       	</a-mixin>
 
-      	<a-mixin id="grainPlayer"
+      	<a-mixin id="monoSynth"
       		geometry="primitive: sphere; radius: 0.2"
       		dynamic-body="shape: sphere"
       		material="color: pink; metalness: 0.9"
     		>
     		</a-mixin>
 
-        <a-mixin id="monoSynth" 
+        <a-mixin id="polySynth" 
 	      	geometry="primitive: box; width: 0.33; height: 0.33; depth: 0.33"
 	      	dynamic-body
 	      	material="shader: grid-glitch"
@@ -99,6 +99,7 @@
 	      <a-entity mixin="wall" material="color: #EF2D5E" class="wall" geometry="width: 7; height: 0.1; depth: 0.3" position="2.5 0 -3" rotation="0 -90 0"></a-entity>
 	      <a-entity mixin="wall" material="color: #EF2D5E" class="wall" geometry="width: 6; height: 0.1; depth: 0.3" position="0 0 0"></a-entity>
     	</a-entity>
+
 
       <a-entity collide-sound="target: wall; source: monoSynth" class="ammo" mixin="ammo monoSynth" position="0 0 -1"></a-entity>
       <a-entity collide-sound="target: wall; source: polySynth" class="ammo" mixin="ammo polySynth" position="0 0 -1.5"></a-entity>
