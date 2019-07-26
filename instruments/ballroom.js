@@ -82,7 +82,6 @@ function GrainPlayerWrapper(grainPlayer, addFx = false) {
 
 	this.synth.volume.value = -18
 	this.synth.detune = 300
-	Tone.Transport.start();
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => {
 		this.synth.start()
@@ -129,8 +128,6 @@ function PolySynthWrapper(synth, addFx = false) {
 		this.synth.triggerAttackRelease(note, this.duration, time, this.vel);
 	}, '8n');
 	this.loop.humanize = true;
-
-	Tone.Transport.start()
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => { 
 		this.vel = vel;
