@@ -36,12 +36,6 @@ AFRAME.registerState({
   		{
   			state.bpm = payload.bpm
   		}
-  	},
-  	// changing the number of steps resets all to false
-  	updateNSteps: function (state, payload) {
-  		if (payload.nSteps && typeof(payload.nSteps) === "number" && payload.nSteps > 0){
-  			state.steps = Array(payload.nSteps).fill(false)
-  		}
   	}
   }
 });
