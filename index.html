@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js"></script>
   </head>
   <body>
-    <a-scene physics="debug: false; gravity: -2; restitution: 0.99; angularDamping: 0.2" cursor="rayOrigin: mouse">
+    <a-scene stats physics="debug: false; gravity: -2; restitution: 0.99; angularDamping: 0.2" cursor="rayOrigin: mouse">
       <a-assets>      
         <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
 
@@ -70,7 +70,7 @@
 			<a-entity id="sequencerWrapper" position="0 0 -2" rotation="0 30 0">
 	    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
 	    	<a-entity id="transport"
-	    		bind__transport="bpm: bpm; layer: layer; layers: layers"
+	    		bind__transport="bpm: bpm; layers: layers"
 	  		>
 	    		<!-- steps are injected dynamically inside this entity -->
 	  		</a-entity>

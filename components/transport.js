@@ -30,10 +30,10 @@ const sampler = new Tone.Sampler({
 })
 
 
-sampler.connect(pingPong)
-sampler.connect(wah)
+// sampler.connect(pingPong)
+// sampler.connect(wah)
 // sampler.sync() // why does this method take so long to execute the next sequence? is this even necessary?
-// sampler.connect(Tone.Master)
+sampler.connect(Tone.Master)
 sampler.volume.value = -20;
 
 // ____TONE END
@@ -70,6 +70,7 @@ AFRAME.registerComponent('transport', {
   update: function () {
   	const data = this.data // props, including bound state
   	const layers = data.layers
+  	const stepsEl = Array.from(document.querySelectorAll('#transport > .step'));
 
   	// redraw steps if number of steps has changed
   	if (isChange(layers)) {
@@ -79,8 +80,6 @@ AFRAME.registerComponent('transport', {
   	// removing scheduled events
   	Tone.Transport.clear()
   	Tone.Transport.bpm.value = data.bpm;
-
-		const ind = document.getElementById('indicator');
 
   	Tone.Transport.scheduleRepeat(() => {
   		for (let i = 0; i < layers.length; i ++)
@@ -97,23 +96,17 @@ AFRAME.registerComponent('transport', {
 	  				sampler.triggerAttackRelease(layer.note, '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j, velocity[j])
 		  		}
 
-		  		// we only need one animation schedule
-		  		if (i === 0)
-		  		{	
-			  		let rads = degs * Math.PI / 180; // degrees to radians
-			  		const x = (-Math.cos(rads))*r;
-			  		const z = (-Math.sin(rads))*r;
-
-			  		// scheduling animation events with Tone.Draw due to performance:
-			  		// https://github.com/Tonejs/Tone.js/wiki/Performance#syncing-visuals
-						Tone.Draw.schedule(() => {
-				  		ind.setAttribute('position', [x, 0.5, z].join(' '))
-						}, Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j);
-		  		}
-					degs += inc;
+					const currentSteps = stepsEl.filter( (el) => el.getAttribute('column') == j)
+		  		Tone.Draw.schedule(() => {
+		  			currentSteps.forEach( (cs) => { 
+		  				cs.setAttribute('geometry', 'radius', cs.getAttribute('geometry').radius + 0.002) 
+		  			})
+		  		}, Tone.Time('+' + 0.1) + Tone.Time(nSteps + 'n') * j);
+		  		
+		  		Tone.Draw.schedule(() => {
+		  			currentSteps.forEach( cs => cs.setAttribute('geometry', 'radius', cs.getAttribute('geometry').radius - 0.002))
+		  		}, Tone.Time('+' + 0.1) + Tone.Time(nSteps + 'n') * (j + 1))
 	  		}
-	  		// reset indicator pos at the end of each iteration
-				degs = 0;
   		}
   	}, '1m')
   },
@@ -127,8 +120,6 @@ AFRAME.registerComponent('transport', {
   		transportChildren.forEach( (ch) => {
   			ch.parentNode.removeChild(ch)
   		});
-  		const ind = document.getElementById('indicator')
-  		ind.parentNode.removeChild(ind)
   	}
   	
   	// create steps for each sequence layer
@@ -151,6 +142,7 @@ AFRAME.registerComponent('transport', {
 	  		step.setAttribute('class', 'step');
 	  		step.setAttribute('geometry', 'radius', map(vels[j], 0.5, 1.5, 0.05, 0.08))
 	  		step.setAttribute('layer', i);
+	  		step.setAttribute('column', j);
 	  		steps[j]
 	  		? step.setAttribute('material', 'color', invertColor('#EF2D5E'))
 				: step.setAttribute('material', 'color', '#EF2D5E');
@@ -160,16 +152,6 @@ AFRAME.registerComponent('transport', {
 	  	}
 	  	degs = 0;
   	}
-
-  	// at last, create the current step indicator
-		let ind = document.createElement('a-sphere');
-		ind.setAttribute('id', 'indicator');
-		ind.setAttribute('position', [-Math.cos(0)*r, 0.5, -Math.sin(0)*r].join(' '));
-		ind.setAttribute('transparent', true);
-		ind.setAttribute('opacity', 0.5);
-		ind.setAttribute('radius', 0.03);
-		ind.setAttribute('color', '#FF0000');
-		transportEl.appendChild(ind);
   }
 });
 
