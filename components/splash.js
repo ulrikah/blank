@@ -22,8 +22,12 @@ AFRAME.registerComponent('splash', {
 	  		ring.setAttribute('geometry', 'radiusInner', radiusInner + inc)
 	  	}
 	  	else {
+	  		ring.setAttribute('class', 'invisibleRing')
 	  		ring.setAttribute('visible', 'false')
-	  		// TO DO: actually remove them from the DOM too
+	  		Array.from(document.querySelectorAll('.invisibleRing')).forEach( (ring) => {
+	  			ring.parentNode.removeChild(ring)
+	  		})
+	  		this.rings = Array.from(document.querySelectorAll('.ring'))
 	  	}
   	});
   },
