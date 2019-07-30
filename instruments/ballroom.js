@@ -108,7 +108,7 @@ function PolySynthWrapper(synth, addFx = false) {
 	this.duration = '16n';
 	this.addFx = addFx;
 
-	this.synth.volume.value = -18;
+	this.synth.volume.value = -10;
 
 	this.chain = new Tone.CtrlMarkov({
 		"beginning" : 
@@ -119,9 +119,9 @@ function PolySynthWrapper(synth, addFx = false) {
 	});
 	this.chain.value = "beginning"
 	this.parts = 
-	{ "beginning": ['C2', 'E2', 'G2', 'B2'],
-		"middle": ['D2', 'F2', 'A2', 'C3'],
-		"end": ['B2', 'D3', 'F3', 'A3']
+	{ "beginning": ['C1', 'C1', 'C1', 'C1'],
+		"middle": ['D1', 'D1', 'D1', 'D1'],
+		"end": ['B0','B0','B0','B0']
 	}
 	this.ctrl = new Tone.CtrlPattern(
 		this.parts["beginning"],
