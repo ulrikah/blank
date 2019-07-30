@@ -25,6 +25,7 @@
     "aframe-log-component": "^1.0.7",
     "aframe-physics-system": "^4.0.0",
     "aframe-state-component": "^6.7.0",
+    "teoria": "^2.5.0",
     "tone": "^13.4.9"
   },
   "devDependencies": {
