@@ -27,7 +27,7 @@ polySynth.set( {
 })
 
 const grainPlayer = new Tone.GrainPlayer({
-	"url" : "../assets/ballroom/dark1.wav",
+	"url" : "../assets/ballroom/dolph.mp3",
 	"loop" : true,
 	"grainSize": 0.2,
 })
@@ -80,18 +80,21 @@ function GrainPlayerWrapper(grainPlayer, addFx = false) {
 	this.synth = grainPlayer;
 	this.addFx = addFx;
 
-	this.volMax = -24
+	this.volMax = -32
 	this.synth.volume.value = this.volMax;
 	this.synth.detune = 300
+	this.synth.loop = false;
 
 	this.collide = (note = "C2", duration = "8n", time = Tone.now(), vel = 0.5, height = -1) => {
 		this.synth.start()
-		this.synth.volume.value = fn.map(vel, 0.3, 1, -32, this.volMax);
+		this.synth.volume.value = fn.map(vel, 0.3, 1, -40, this.volMax, true);
+		this.synth.detune += fn.map(height, 0, 5, -200, 200, true)
+		
 		if (this.synth.detune > 400){
-			this.synth.detune += Math.random()*-100;
+			this.synth.detune = 300 + Math.random()*-100;
 		}
 		else if (this.synth.detune < -400){
-			this.synth.detune += Math.random()*100;	
+			this.synth.detune = 300 + Math.random()*100;	
 		}
 		else {
 			this.synth.detune += Math.random()*(Math.random() > 0.5 ? 100 : -100)

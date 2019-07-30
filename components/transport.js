@@ -8,25 +8,13 @@ const Tone = require('tone');
 const pingPong = new Tone.PingPongDelay(0.1, 0.2).toMaster();
 const wah = new Tone.AutoWah(50, 6, -30).toMaster();
 const sampler = new Tone.Sampler({
-	// "C1" : "../assets/samples/abc/a.mp3",
-	// "D1" : "../assets/samples/abc/b.mp3",
-	// "E1" : "../assets/samples/abc/c.mp3",
-	// "C2" : "../assets/samples/707/bd1.wav",
-	// "D2" : "../assets/samples/707/snare1.wav",
+	"C3" : "../assets/samples/synth/kick1.mp3",
+	"D3" : "../assets/samples/synth/kick8.mp3",
+	"E3" : "../assets/samples/synth/khotin.mp3",
+	"F3" : "../assets/samples/synth/break.mp3",
+	"G3" : "../assets/samples/synth/birds.mp3",
+	"A3" : "../assets/samples/synth/moomin.mp3"
 
-	// synth folder
-	"C3" : "../assets/samples/synth/kick1.wav",
-	"D3" : "../assets/samples/synth/kick8.wav",
-	"E3" : "../assets/samples/synth/bass1.wav",
-	// "F3" : "../assets/samples/synth/bass2.wav",
-	// "G3" : "../assets/samples/synth/organ.wav",
-	// "A3" : "../assets/samples/synth/pad1.wav",
-	// "B3" : "../assets/samples/synth/pad2.wav",
-	"C4" : "../assets/samples/synth/perc1.wav",
-	// "D4" : "../assets/samples/synth/perc2.wav",
-	"E4" : "../assets/samples/synth/perc3.wav",
-	"F4" : "../assets/samples/synth/stab.wav",
-	// "G4" : "../assets/samples/synth/synth.wav"
 })
 
 
@@ -93,7 +81,7 @@ AFRAME.registerComponent('transport', {
 	  		for (let j = 0; j < nSteps; j ++ ){
 	  			// trigger sample if current step is active
 	  			if (steps[j]){
-	  				sampler.triggerAttackRelease(layer.note, '8n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j, velocity[j])
+	  				sampler.triggerAttackRelease(layer.note, '2n', Tone.Time('+' + nSteps + 'n') + Tone.Time(nSteps + 'n') * j, velocity[j])
 		  		}
 
 					const currentSteps = stepsEl.filter( (el) => el.getAttribute('column') == j)

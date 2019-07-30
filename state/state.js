@@ -6,18 +6,20 @@ const randomArray = (length, max, min = 0) =>
 const randomBoolArray = (length) => 
 	Array(length).fill().map(() => Math.random() >= 0.5)
 
-AFRAME.registerState({
-  initialState: {
+const initialState = {
     layers: [
     	{ note: 'C3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
     	{ note: 'D3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
     	{ note: 'E3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
-    	{ note: 'C4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
-    	{ note: 'F4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
-    	{ note: 'E4', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'F3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'G3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
+    	{ note: 'A3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
     ],
     bpm: 110
-  },
+  }
+
+AFRAME.registerState({
+  initialState: initialState,
  
   handlers: {
 
