@@ -26,9 +26,13 @@ require('./components/collide-sound.js')
 require('./components/hide-in-vr.js')
 require('./components/splash.js')
 require('./components/collide-marble.js')
+require('./components/synth.js');
 
 // AFRAME state
 require('./state/state.js')
+
+// AFRAME systems
+require('./systems/synth.js')
 
 // shaders
 require('./shaders/grid-glitch.js')

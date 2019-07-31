@@ -9,7 +9,16 @@
 */
 AFRAME.registerComponent('grab-vertical', {
 	schema: {
-		heightRange: { type: 'array', default: [0.5, 2] }
+		heightRange: { 
+			type: 'array', 
+			default: [0.5, 2],
+			parse: function (value) {
+      	return value.split(' ').map(v => parseFloat(v));
+	    },
+	    stringify: function (value) {
+	      return value.join(' ');
+	    }
+		}
 	},
 
   init: function () {
@@ -74,12 +83,10 @@ AFRAME.registerComponent('grab-vertical', {
 
     // updates the scale in relation to change in z position
     const n = THREE.Math.mapLinear(this.deltaPosition.y, -0.1, 0.1, 0.85, 1.15)
-    const range = [0.3, 2]
 
     // hacky check to see if the new value is within the desired range
     height = hitEl.getAttribute('geometry').height;
-    if (!(height * n < range[0] || height * n > range[1])){
-    	AFRAME.log("new height", height*n.toFixed(2));
+    if (!(height * n < this.heightRange[0] || height * n > this.heightRange[1])){
   		hitEl.setAttribute('geometry', 'height', height*n)
     }
   },

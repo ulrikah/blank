@@ -7,23 +7,16 @@ AFRAME.registerComponent('synth', {
 	},
 
   init: function () {
-    this.system.registerMe(this.el);
-    this.audioNode = null;
+  	const el = this.el
+    this.system.registerMe(el);
     
-    /*
-    this.height = this.el.getAttribute('geometry').height;
-    this.el.addEventListener('componentchanged', (evt) => { 
+    this.height = el.getAttribute('geometry').height;
+    el.addEventListener('componentchanged', (evt) => { 
     	if (evt.detail.name === 'geometry') {
 		    const height = evt.target.getAttribute('geometry').height
 		    this.height = height;
 		  }
     });
-    */
-  },
-
-  update: function () {
-  	this.audioNode = this.system.createAudioNode(this.data.source)
-  	console.log(this.audioNode);
   },
 
   remove: function () {
