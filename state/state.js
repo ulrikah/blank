@@ -15,7 +15,7 @@ const initialState = {
     	{ note: 'G3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
     	{ note: 'A3', steps: Array(8).fill(false), velocity: randomArray(8, 1.5, 0.5)},
     ],
-    bpm: 110
+    bpm: 165
   }
 
 AFRAME.registerState({

@@ -10,6 +10,7 @@
   <body>
     <a-scene cursor="rayOrigin: mouse">
       <a-assets>
+      	<img id="rocks" src="./assets/materials/rocks1.jpg">
       </a-assets>
       <a-camera position="0 1.6 2"></a-camera>
       <a-entity environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
@@ -19,16 +20,16 @@
       
       <a-entity random-material geometry="primitive: dodecahedron; radius: 0.3" position="0 2 -2" tone-transport-toggle></a-entity>
       <a-entity>
-	      <a-cylinder random-material synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="0 0 -1">
+	      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="0 0 -1">
 	      	<a-entity position="0.5 1 0" text="value: Oscillator"></a-entity>
 	      </a-cylinder>
-	      <a-cylinder random-material synth="source: phaser" class="cylinder" radius="0.2" height="0.5" position="1 0 -1">
+	      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: phaser" class="cylinder" radius="0.2" height="0.5" position="1 0 -1">
 	      	<a-entity position="0.5 1 0" text="value: Phaser"></a-entity>
 	      </a-cylinder>
-	      <a-cylinder random-material synth="source: detune" class="cylinder" radius="0.2" height="1" position="-1 0 -1">
+	      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: detune" class="cylinder" radius="0.2" height="1" position="-1 0 -1">
 	      	<a-entity position="0.5 1 0" text="value: Detune"></a-entity>
 	      </a-cylinder>
-	      <a-cylinder random-material synth="source: volume" class="cylinder" radius="0.2" height="1" position="0 0 -2">
+	      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: volume" class="cylinder" radius="0.2" height="1" position="0 0 -2">
 	      	<a-entity position="0.5 1 0" text="value: Volume"></a-entity>
 	      </a-cylinder>
 	      <!--

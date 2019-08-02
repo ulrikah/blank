@@ -6,6 +6,7 @@ require('aframe-haptics-component');
 require('aframe-log-component');
 require('aframe-physics-system');
 require('aframe-environment-component');
+require('aframe-text-geometry-component');
 
 // AFRAME components
 require('./components/cursor-listener.js')

@@ -16,3 +16,12 @@ exports.map = (value, a, b, c, d, clamp = false) => {
 	}
 	return c + (d - c) * (value - a) / (b - a);
 }
+
+exports.avg = (array) => {
+	if (array.length)
+	{
+		sum = array.reduce(function(a, b) { return a + b; });
+		return sum / array.length
+	}
+	return 0
+}

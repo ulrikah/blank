@@ -16,6 +16,8 @@
       <a-assets>      
         <audio id="sfx-gun" src="https://cdn.glitch.com/1d750fac-a652-409d-949b-156f935085a2%2Ftrimmed-40MM%20M79%20grenade%20launcher%20single%20shot%20close%20perspective_BLASTWAVEFX_09562.mp3?1510643217955" crossorigin="anonymous" ></audio>
 
+				<a-asset-item id="block" src="./assets/fonts/BlockUp_Regular.json"></a-asset-item>
+
         <a-mixin id="step"
 					geometry="primitive: dodecahedron"
        	>
@@ -68,6 +70,11 @@
       
 			<!-- Sequencer -->
 			<a-entity id="sequencerWrapper" position="0 0 -2" rotation="0 30 0">
+				<a-entity 
+	    	position="-0.3 2.3 -0.5" shadow
+	    	rotation="0 -30 0"
+	    	text-geometry="value: PLAY / PAUSE; font: #block; height: 0.005; size: 0.1"
+	    	material="color: black"></a-entity>
 	    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
 	    	<a-entity id="transport"
 	    		bind__transport="bpm: bpm; layers: layers"

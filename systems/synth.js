@@ -9,17 +9,25 @@ AFRAME.registerSystem('synth', {
   synthItUp: function () {
   	Tone.Transport.stop()
     this.polySynth = new Tone.PolySynth(6, Tone.FMSynth);
+  	this.wf = new Tone.Waveform(32);
+    this.polySynth.connect(this.wf);
     this.filter = new Tone.Filter();
     this.phaser = new Tone.Phaser();
     
     this.polySynth.chain(this.filter, this.phaser, Tone.Master);
 
     const loop = new Tone.Loop( (time) => {
+    	const avgFFT = fn.avg(Array.from(this.wf.getValue()));
     	for (let i = 0; i < this.entities.length; i ++)
     	{
-    		const source = this.entities[i].getAttribute('synth').source;
+    		const entity = this.entities[i];
+    		const source = entity.getAttribute('synth').source;
 	    	const h = this.entities[i].getAttribute('height');
     		
+    		const r = entity.getAttribute('radius');
+	    	Tone.Draw.schedule( () => {
+	    		entity.setAttribute('radius', r*(1 + 3*avgFFT))
+	    	}, '+0.01');
     		if (source === "oscillator") {
 		    	const f = Math.round(fn.map(h, 0.5, 1.5, 110, 440, true))
 		    	this.polySynth.triggerAttackRelease(f, '32n')
