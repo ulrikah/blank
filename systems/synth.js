@@ -14,7 +14,6 @@ AFRAME.registerSystem('synth', {
     
     this.polySynth.chain(this.filter, this.phaser, Tone.Master);
 
-    const notes = ['C2', 'D2', 'E2', 'F2']
     const loop = new Tone.Loop( (time) => {
     	for (let i = 0; i < this.entities.length; i ++)
     	{
@@ -22,15 +21,18 @@ AFRAME.registerSystem('synth', {
 	    	const h = this.entities[i].getAttribute('height');
     		
     		if (source === "oscillator") {
-		    	const i = Math.round(fn.map(h, 0.5, 1.5, 0, notes.length, true))
-		    	const note = notes[i]
-		    	this.polySynth.triggerAttackRelease(note, '32n')
+		    	const f = Math.round(fn.map(h, 0.5, 1.5, 110, 440, true))
+		    	this.polySynth.triggerAttackRelease(f, '32n')
     
     		} else if (source === "phaser") {
-    			const f = Math.round(fn.map(h, 1, 1.5, 0.1, 15))
-    			const o = Math.round(fn.map(h, 1, 1.5, 1, 5))
+    			const f = Math.round(fn.map(h, 0.5, 1.5, 0.1, 15))
+    			const o = Math.round(fn.map(h, 0.5, 1.5, 1, 5))
     			this.phaser.frequency = f;
     			this.phaser.octaves = o;
+    		} else if (source === "detune") {
+    			const amount = Math.round(fn.map(h, 0.5, 1.5, -400, 400))
+    			this.polySynth.set('detune', amount);
+
     		}
     	}
     }, '8n').start(0);

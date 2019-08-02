@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title> Marbles </title>
+    <title> Cylinders </title>
     <meta name="description" content="Music in WebVR by combining A-Frame and Tone.js">
     <link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
     <script type="text/javascript" src="bundle.js"></script>
@@ -19,8 +19,15 @@
       
       <a-entity random-material geometry="primitive: dodecahedron; radius: 0.3" position="0 2 -2" tone-transport-toggle></a-entity>
       <a-entity>
-	      <a-cylinder random-material synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="0 0 -1"></a-cylinder>
-	      <a-cylinder random-material synth="source: phaser" class="cylinder" radius="0.2" height="0.5" position="1 0 -1"></a-cylinder>
+	      <a-cylinder random-material synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="0 0 -1">
+	      	<a-entity position="0.5 1 0" text="value: Oscillator"></a-entity>
+	      </a-cylinder>
+	      <a-cylinder random-material synth="source: phaser" class="cylinder" radius="0.2" height="0.5" position="1 0 -1">
+	      	<a-entity position="0.5 1 0" text="value: Phaser"></a-entity>
+	      </a-cylinder>
+	      <a-cylinder random-material synth="source: detune" class="cylinder" radius="0.2" height="1" position="-1 0 -1">
+	      	<a-entity position="0.5 1 0" text="value: Detune"></a-entity>
+	      </a-cylinder>
 	      <!--
 	      <a-entity random-material synth="source: lowpass" class="cylinder" geometry="primitive: cylinder; radius: 0.2; height: 1.3" position="1 0 -1">
 	      	<a-entity position="0.5 1 0" text="value: Lowpass"></a-entity>
