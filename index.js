@@ -27,6 +27,7 @@ require('./components/hide-in-vr.js')
 require('./components/splash.js')
 require('./components/collide-marble.js')
 require('./components/synth.js');
+require('./components/boom.js');
 
 // AFRAME state
 require('./state/state.js')
