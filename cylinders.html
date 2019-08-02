@@ -13,11 +13,11 @@
       	<img id="rocks" src="./assets/materials/rocks1.jpg">
       </a-assets>
       <a-camera position="0 1.6 2"></a-camera>
-      <a-entity environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
+      <a-entity environment="preset: yavapai; shadow: true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
 
       <!-- Physics terrain ground -->
       <a-box width="75" height="10" depth="75" position="0 -4.995 0" visible="false"></a-box>
-      
+
       <a-entity random-material geometry="primitive: dodecahedron; radius: 0.3" position="0 2 -2" tone-transport-toggle></a-entity>
       <a-entity>
 	      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="0 0 -1">

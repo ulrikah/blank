@@ -22,7 +22,7 @@
 					geometry="primitive: dodecahedron"
        	>
        	</a-mixin>
-        <a-mixin id="wall" class="wall" geometry="primitive: box" static-body force-pushable shadow ></a-mixin>
+        <a-mixin id="wall" class="wall" geometry="primitive: box" static-body force-pushable></a-mixin>
 
         <a-mixin id="grainPlayer"
         	geometry="primitive: sphere; radius: 0.3;"
@@ -64,16 +64,16 @@
       	<a-camera look-controls wasd-controls></a-camera>
       </a-entity>
       <a-entity 
-      	environment="preset:contact; shadow:true; seed:19; lightPosition: 0.7 0.7 0.7">
+      	environment="preset: yavapai; shadow:true; seed: 13; dressing: stones; lightPosition: 0.7 0.7 0.7">
       </a-entity>
 
       
 			<!-- Sequencer -->
 			<a-entity id="sequencerWrapper" position="0 0 -2" rotation="0 30 0">
 				<a-entity 
-	    	position="-0.3 2.3 -0.5" shadow
+	    	position="0.1 2.3 -0.4" shadow
 	    	rotation="0 -30 0"
-	    	text-geometry="value: PLAY / PAUSE; font: #block; height: 0.005; size: 0.1"
+	    	text-geometry='value: > "; font: #block; height: 0.005; size: 0.1'
 	    	material="color: black"></a-entity>
 	    	<a-entity id="play-pause" class="step" geometry="primitive: dodecahedron; radius: 0.1" material="color: #F6F7A7;" play-pause position="0 2 0" radius="0.3"></a-entity>
 	    	<a-entity id="transport"
