@@ -32,7 +32,12 @@ AFRAME.registerSystem('synth', {
     		} else if (source === "detune") {
     			const amount = Math.round(fn.map(h, 0.5, 1.5, -400, 400))
     			this.polySynth.set('detune', amount);
-
+    		} else if (source === "volume") {
+    			let volume = -100
+    			if (h > 0.5){
+    				volume = Math.round(fn.map(h, 0.51, 1.5, -32, 0, true))
+    			}
+    			this.polySynth.volume.value = volume;
     		}
     	}
     }, '8n').start(0);
