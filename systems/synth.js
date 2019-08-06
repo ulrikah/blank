@@ -4,10 +4,7 @@ const fn = require('../functions/functions.js');
 AFRAME.registerSystem('synth', {
   init: function () {
     this.entities = [];
-  },
 
-  synthItUp: function () {
-  	Tone.Transport.stop()
     this.polySynth = new Tone.PolySynth(6, Tone.FMSynth);
   	this.wf = new Tone.Waveform(32);
     this.polySynth.connect(this.wf);
@@ -16,7 +13,7 @@ AFRAME.registerSystem('synth', {
     
     this.polySynth.chain(this.filter, this.phaser, Tone.Master);
 
-    const loop = new Tone.Loop( (time) => {
+    Tone.Transport.scheduleRepeat(() => {
     	const avgFFT = fn.avg(Array.from(this.wf.getValue()));
     	for (let i = 0; i < this.entities.length; i ++)
     	{
@@ -30,8 +27,7 @@ AFRAME.registerSystem('synth', {
 	    	}, '+0.01');
     		if (source === "oscillator") {
 		    	const f = Math.round(fn.map(h, 0.5, 1.5, 110, 440, true))
-		    	this.polySynth.triggerAttackRelease(f, '32n')
-    
+		    	this.polySynth.triggerAttackRelease(f, '32n', Tone.Time('+8n') + Tone.Time('8n') * i)
     		} else if (source === "phaser") {
     			const f = Math.round(fn.map(h, 0.5, 1.5, 0.1, 15))
     			const o = Math.round(fn.map(h, 0.5, 1.5, 1, 5))
@@ -48,16 +44,12 @@ AFRAME.registerSystem('synth', {
     			this.polySynth.volume.value = volume;
     		}
     	}
-    }, '8n').start(0);
+    }, '1m')
   },
 
   registerMe: function (el) {
     this.entities.push(el);
     const source = el.getAttribute('synth').source
-    if (source === "oscillator")
-    {
-    	this.synthItUp();
-    }
   },
 
   unregisterMe: function (el) {
