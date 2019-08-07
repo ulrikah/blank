@@ -11,7 +11,7 @@ const sampler = new Tone.Sampler({
 	"C3" : "../assets/samples/synth/kick1.mp3",
 	"D3" : "../assets/samples/synth/kick8.mp3",
 	"E3" : "../assets/samples/synth/khotin.mp3",
-	"F3" : "../assets/samples/synth/break.mp3",
+	"F3" : "../assets/samples/synth/rubber.mp3",
 	"G3" : "../assets/samples/synth/birds.mp3",
 	"A3" : "../assets/samples/synth/moomin.mp3"
 
