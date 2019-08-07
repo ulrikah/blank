@@ -48,7 +48,7 @@ AFRAME.registerSystem('synth', {
     		else if (source === "volume") {
     			let volume = -100
     			if (h > 0.5){
-    				volume = Math.round(fn.map(h, 0.51, 3, -32, -16, true))
+    				volume = Math.round(fn.map(h, 0.51, 3, -32, -8, true))
     			}
     			this.synth.volume.value = volume;
     		}
