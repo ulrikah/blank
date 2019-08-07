@@ -127,7 +127,7 @@ AFRAME.registerComponent('transport', {
 
 	  		step.setAttribute('position', [x, 1 + (0.2)*i, z].join(' '));
 	  		step.setAttribute('mixin', 'step');
-	  		step.setAttribute('class', 'step');
+	  		step.setAttribute('class', 'step upForGrab');
 	  		step.setAttribute('geometry', 'radius', map(vels[j], 0.5, 1.5, 0.05, 0.08))
 	  		step.setAttribute('layer', i);
 	  		step.setAttribute('column', j);

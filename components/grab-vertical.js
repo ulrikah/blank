@@ -9,6 +9,7 @@
 */
 AFRAME.registerComponent('grab-vertical', {
 	schema: {
+		target: { default: '' },
 		heightRange: { 
 			type: 'array', 
 			default: [0.5, 2],
@@ -67,6 +68,9 @@ AFRAME.registerComponent('grab-vertical', {
     // If the hand is not grabbing the element does not stick.
     // If we're already grabbing something you can't grab again.
     if (!hitEl || hitEl.is(this.GRABBED_STATE) || !this.grabbing || this.hitEl) { return; }
+    if (!hitEl.classList.contains(this.data.target)) {
+    	return; 
+    }
     hitEl.addState(this.GRABBED_STATE);
     this.hitEl = hitEl;
   },
@@ -86,8 +90,8 @@ AFRAME.registerComponent('grab-vertical', {
 
     // hacky check to see if the new value is within the desired range
     height = hitEl.getAttribute('geometry').height;
-    if (!(height * n < this.heightRange[0] || height * n > this.heightRange[1])){
-  		hitEl.setAttribute('geometry', 'height', height*n)
+    if (!(height * n < this.data.heightRange[0] || height * n > this.data.heightRange[1])){
+  		hitEl.setAttribute('height', height*n)
     }
   },
 

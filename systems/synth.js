@@ -10,7 +10,6 @@ AFRAME.registerSystem('synth', {
     this.phaser = cylinderSynth.phaser;
     this.pingPong = cylinderSynth.pingPong
     this.synth = cylinderSynth.synth;
-    Tone.Transport.bpm.value = 165;
 
     this.synth.chain(this.phaser, this.pingPong, Tone.Master)
 
@@ -22,26 +21,26 @@ AFRAME.registerSystem('synth', {
 	    	const h = this.entities[i].getAttribute('height');
     		
     		if (source === "oscillator") {
-    			const idx = Math.round(fn.map(h, 0.5, 1.5, 0, this.scale.scale.length-1, true));
+    			const idx = Math.round(fn.map(h, 0.5, 3, 0, this.scale.scale.length-1, true));
 		    	const note = this.scale.get(idx).toString()
 		    	this.synth.triggerAttackRelease(note, '32n', Tone.Time('+8n') + Tone.Time('8n') * i)
     		} 
 
     		else if (source === "phaser") {
-    			const f = Math.round(fn.map(h, 0.5, 1.5, 0.1, 15))
-    			const o = Math.round(fn.map(h, 0.5, 1.5, 1, 5))
+    			const f = Math.round(fn.map(h, 0.5, 3, 0.1, 15))
+    			const o = Math.round(fn.map(h, 0.5, 3, 1, 5))
     			this.phaser.frequency = f;
     			this.phaser.octaves = o;
     		} 
 
     		else if (source === "detune") {
-    			const amount = Math.round(fn.map(h, 0.5, 1.5, -400, 400))
+    			const amount = Math.round(fn.map(h, 0.5, 3, -400, 400))
     			this.synth.set('detune', amount);
     		}
 
     		else if (source === "pingPong") {
-    			const delayTime = fn.map(h, 0.5, 1.5, Tone.Time('64n').toSeconds(), Tone.Time('4n').toSeconds(), true)	
-    			const feedback = fn.map(h, 0.5, 1.5, 0, 0.5, true)
+    			const delayTime = fn.map(h, 0.5, 3, Tone.Time('64n').toSeconds(), Tone.Time('4n').toSeconds(), true)	
+    			const feedback = fn.map(h, 0.5, 3, 0, 0.5, true)
     			this.pingPong.delayTime.value = delayTime;
     			this.pingPong.feedback.value = feedback;
     		} 
@@ -49,7 +48,7 @@ AFRAME.registerSystem('synth', {
     		else if (source === "volume") {
     			let volume = -100
     			if (h > 0.5){
-    				volume = Math.round(fn.map(h, 0.51, 1.5, -32, 0, true))
+    				volume = Math.round(fn.map(h, 0.51, 3, -32, -16, true))
     			}
     			this.synth.volume.value = volume;
     		}

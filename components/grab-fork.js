@@ -8,6 +8,10 @@
 * Updates its position to move along the controller.
 */
 AFRAME.registerComponent('grab-fork', {
+	schema: {
+		target: { default: '' }
+	},
+
   init: function () {
     this.GRABBED_STATE = 'grabbed';
     // Bind event handlers
@@ -55,6 +59,9 @@ AFRAME.registerComponent('grab-fork', {
     // If the hand is not grabbing the element does not stick.
     // If we're already grabbing something you can't grab again.
     if (!hitEl || hitEl.is(this.GRABBED_STATE) || !this.grabbing || this.hitEl) { return; }
+    if (!hitEl.classList.contains(this.data.target)) { 
+    	return; 
+    }
     hitEl.addState(this.GRABBED_STATE);
     this.hitEl = hitEl;
   },

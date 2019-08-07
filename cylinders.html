@@ -9,48 +9,46 @@
   </head>
   <body>
     <a-scene cursor="rayOrigin: mouse">
-      <a-assets>
-      	<img id="rocks" src="./assets/materials/rocks1.jpg">
-      </a-assets>
       <a-camera position="0 1.6 2"></a-camera>
       <a-entity environment="preset: yavapai; shadow: true; seed:19; lightPosition: 0.7 0.7 0.7"></a-entity>
 
       <!-- Physics terrain ground -->
       <a-box width="75" height="10" depth="75" position="0 -4.995 0" visible="false"></a-box>
 
-      <a-entity random-material geometry="primitive: dodecahedron; radius: 0.3" position="0 2 -2" tone-transport-toggle></a-entity>
+      <a-entity random-material geometry="primitive: dodecahedron; radius: 0.3" position="0 2 -1" play-pause></a-entity>
       <a-entity>
       	<a-entity position="-1 0 0">
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="1.2" position="0 0 0">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="1.2" position="0 0 0">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.3" position="0.5 0 0">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="0.6" position="0.5 0 0">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="1 0 0">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="0.8" position="1 0 0">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.7" position="1.5 0 0">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="0.7" position="1.5 0 0">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="1.2" position="0 0 -0.51">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="1.2" position="0 0 -0.51">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.3" position="0.5 0 -0.51">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="0.6" position="0.5 0 -0.51">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.8" position="1 0 -0.51">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="0.8" position="1 0 -0.51">
 		      </a-cylinder>
-		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder" radius="0.2" height="0.7" position="1.5 0 -0.51">
+		      <a-cylinder material="color: pink; roughness: 0; metalness: 0" synth="source: oscillator" class="cylinder upForGrab" radius="0.2" height="0.7" position="1.5 0 -0.51">
 		      </a-cylinder>
 	    	</a-entity>
 
+	    	<a-entity geometry="primitive: plane; height: 5" material log="channel: master" rotation="0 20 0" position="-1 0 -2" channel="master"></a-entity>
 	    	<a-entity>
-		      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: phaser" class="cylinder" radius="0.2" height="0.5" position="0.5 0 -1">
+		      <a-cylinder material="color: purple; roughness: 0; metalness: 0" synth="source: phaser" class="cylinder upForGrab" radius="0.2" height="0.5" position="0.5 0 -1">
 		      	<a-entity position="0.5 1 0" text="value: Phaser"></a-entity>
 		      </a-cylinder>
-		      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: detune" class="cylinder" radius="0.2" height="1" position="-0.5 0 -1">
+		      <a-cylinder material="color: purple; roughness: 0; metalness: 0" synth="source: detune" class="cylinder upForGrab" radius="0.2" height="1" position="-0.5 0 -1">
 		      	<a-entity position="0.5 1 0" text="value: Detune"></a-entity>
 		      </a-cylinder>
-		      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: volume" class="cylinder" radius="0.2" height="1" position="0 0 -1.5">
+		      <a-cylinder material="color: purple; roughness: 0; metalness: 0" synth="source: volume" class="cylinder upForGrab" radius="0.2" height="1" position="0 0 -1.5">
 		      	<a-entity position="0.5 1 0" text="value: Volume"></a-entity>
 		      </a-cylinder>
-		      <a-cylinder material="src: #rocks; color: pink; roughness: 0; metalness: 0" synth="source: pingPong" class="cylinder" radius="0.2" height="1" position="1 0 -1.5">
-		      	<a-entity position="0.5 1 0" text="value: Volume"></a-entity>
+		      <a-cylinder material="color: purple; roughness: 0; metalness: 0" synth="source: pingPong" class="cylinder upForGrab" radius="0.2" height="1" position="1 0 -1.5">
+		      	<a-entity position="0.5 1 0" text="value: Delay"></a-entity>
 		      </a-cylinder>
 		    </a-entity>
     	</a-entity>
@@ -60,7 +58,7 @@
                 vive-controls="hand: right"
                 oculus-touch-controls="hand: right"
                 windows-motion-controls="hand: right"
-                aabb-collider="objects: .cylinder;"
+                aabb-collider="objects: .upForGrab;"
                 grab-vertical="heightRange: 0.5 3"
       >
       </a-entity>
@@ -68,7 +66,7 @@
                 vive-controls="hand: left"
                 oculus-touch-controls="hand: left"
                 windows-motion-controls="hand: left"
-                aabb-collider="objects: .cylinder;"
+                aabb-collider="objects: .upForGrab;"
                 grab-vertical="heightRange: 0.5 3"
       >
       </a-entity>
